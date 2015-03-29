@@ -79,7 +79,7 @@ public class GameView extends View {
     private final Rect mSrcRect = new Rect();//시작하는 사각형
     private final Rect mDstRect = new Rect();//끝나는 사각형
 
-    //변수들 이름 한번 ㅈ같이 해놧네...
+    //변수들 이름...
     private int mSxy;
     private int mOffetX;
     private int mOffetY;
