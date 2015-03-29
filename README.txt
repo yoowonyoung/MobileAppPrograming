@@ -45,4 +45,4 @@ To use the main vs library project:
 For more details on the purpose of this feature, its limitations and detailed usage,
 please read the SDK guide at
   http://developer.android.com/guide/developing/eclipse-adt.html
-
+.
