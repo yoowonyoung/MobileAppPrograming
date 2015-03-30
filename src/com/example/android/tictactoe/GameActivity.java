@@ -19,6 +19,7 @@ package com.example.android.tictactoe;
 import java.util.Random;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.tictactoe.GameView.ICellListener;
 import com.example.android.tictactoe.GameView.State;
@@ -46,7 +48,7 @@ public class GameActivity extends Activity {
     private GameView mGameView;//화면 나타내는 gameView
     private TextView mInfoView;//누가 이겼는지 나타내는 텍스트 뷰
     private Button mButtonNext;
-
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle bundle) {
@@ -244,7 +246,6 @@ public class GameActivity extends Activity {
         mGameView.setWinner(player);//승자가 누구인지 해주고
         mGameView.setEnabled(false);//터치 안되게 막고
         mGameView.setFinished(col, row, diagonal);//어떤줄에서 이겼는지 보여줌
-
         setWinState(player);//그리고 이겼으니까 상태변경
     }
 
@@ -258,8 +259,14 @@ public class GameActivity extends Activity {
             text = getString(R.string.tie);//이긴사람이 없다는 스트링
         } else if (player == State.PLAYER1) {//이긴놈이 플레이어1 일땐
             text = getString(R.string.player1_win);//플레이어 1이 이겻다는 스트링
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("Player",1);
+            setResult(1,i);
         } else {//이긴사람이 없지도, 1도 아니라면
             text = getString(R.string.player2_win);// 플레이어 2가 이겻겟지?
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("Player",2);
+            setResult(1,i);
         }
         mInfoView.setText(text);//그리고 그걸 화면에 띄워줌
     }

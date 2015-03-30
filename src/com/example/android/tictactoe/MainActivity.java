@@ -21,11 +21,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.example.android.tictactoe.GameView.State;
 
 public class MainActivity extends Activity {
     /** Called when the activity is first created. */
+	private int player1win = 0;
+	private int player2win = 0;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,24 @@ public class MainActivity extends Activity {
                 startWithHuman ? State.PLAYER1.getValue() : State.PLAYER2.getValue());
         //선택한 버튼에 따라 t/f값이 넘어 오는데, 이로 구분을 해서 사람먼저,컴퓨터 먼저 구분해서 시작
         //사람먼저 일 경우 1, 컴퓨터 먼저 일경우 2
-        startActivity(i);
+        startActivityForResult(i,1);//1번으로 시작
+    }
+    protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
+        super.onResume();
+        if(player1win != 0 || player2win != 0){
+        	Toast.makeText(MainActivity.this, "player1 score " + player1win + " win, "+ player2win + " lose \n" +  "player2 score " + player2win + " win, "+ player1win + " lose ", Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	// TODO Auto-generated method stub
+    	super.onActivityResult(requestCode, resultCode, data);
+    	int score = data.getExtras().getInt("Player");
+    	if(score == 1){
+    		player1win += 1;
+    	}else if (score == 2){
+    		player2win += 1;
+    	}
     }
 }
