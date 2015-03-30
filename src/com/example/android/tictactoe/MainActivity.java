@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
+        startActivity(new Intent(this, LoadingActivity.class));
         findViewById(R.id.start_player).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
