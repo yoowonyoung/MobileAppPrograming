@@ -32,13 +32,13 @@
         android:id="@+id/start_player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start_player" />
+        android:text="@string/start_player1" />
 
     <Button
         android:id="@+id/start_comp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:text="@string/start_comp" />
+        android:text="@string/start_player2" />
 
 </LinearLayout>
