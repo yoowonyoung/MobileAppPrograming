@@ -16,10 +16,15 @@
 
 package com.example.android.tictactoe;
 
+import java.io.IOException;
 import java.util.Random;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -48,6 +53,8 @@ public class GameActivity extends Activity {
     private GameView mGameView;//화면 나타내는 gameView
     private TextView mInfoView;//누가 이겼는지 나타내는 텍스트 뷰
     private Button mButtonNext;
+    private SoundPool sp;
+    private int sound;
     
     /** Called when the activity is first created. */
     @Override
@@ -81,6 +88,9 @@ public class GameActivity extends Activity {
         mGameView.setCellListener(new MyCellListener());//이벤트에 자신이 정의한 리스너 붙임
 
         mButtonNext.setOnClickListener(new MyButtonListener());//이벤트에 자신이 정의한 리스너 붙임
+        
+        sp = new SoundPool(1,AudioManager.STREAM_MUSIC,0);
+        sound = sp.load(this, R.raw.winsound,1);
     }
 
     @Override
@@ -176,8 +186,7 @@ public class GameActivity extends Activity {
                         }
                     }
                 }
-
-                finishTurn();//그리고 플레이어2의 턴을 끝내
+               finishTurn();//그리고 플레이어2의 턴을 끝내
                 return true;//끝냈으니까 true
             }
             return false;//행여나 못끝내면 false
@@ -273,11 +282,13 @@ public class GameActivity extends Activity {
             setResult(1,i);
         } else if (player == State.PLAYER1) {//이긴놈이 플레이어1 일땐
             text = getString(R.string.player1_win);//플레이어 1이 이겻다는 스트링
+            sp.play(sound, 1, 1, 0, 0, 1);
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("Player",1);
             setResult(1,i);
         } else {//이긴사람이 없지도, 1도 아니라면
             text = getString(R.string.player2_win);// 플레이어 2가 이겻겟지?
+            sp.play(sound, 1, 1, 0, 0, 1);
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("Player",2);
             setResult(1,i);
