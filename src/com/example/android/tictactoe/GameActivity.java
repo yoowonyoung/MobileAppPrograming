@@ -16,19 +16,19 @@
 
 package com.example.android.tictactoe;
 
-import java.io.IOException;
 import java.util.Random;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -53,8 +53,26 @@ public class GameActivity extends Activity {
     private GameView mGameView;//화면 나타내는 gameView
     private TextView mInfoView;//누가 이겼는지 나타내는 텍스트 뷰
     private Button mButtonNext;
+    
+    
+    
+    
+    
+    
+    //////
     private SoundPool sp;
-    private int sound;
+    private int winSound;
+    private MediaPlayer timerSound;//타이머소리를 mediaplayer로 처리, soundpool은 oncreate에서 바로 플레이 할 수 없고, play했을때 안되는 부분도 많다.무슨 핸들러나 스래드 쓰면 된다는데 잘 모르겄음
+    private CountDownTimer mCountDown ; 
+    private TextView time;//타이머 남은 시간 표시
+    //////
+    
+    
+    
+    
+    
+    
+    
     
     /** Called when the activity is first created. */
     @Override
@@ -82,26 +100,85 @@ public class GameActivity extends Activity {
         mGameView = (GameView) findViewById(R.id.game_view);
         mInfoView = (TextView) findViewById(R.id.info_turn);
         mButtonNext = (Button) findViewById(R.id.next_turn);
-
+        
+        
+        
+        
+        
+        
+        
+        
+        ////////
+        time = (TextView) findViewById(R.id.time);
+        ///////
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         mGameView.setFocusable(true);
         mGameView.setFocusableInTouchMode(true);
         mGameView.setCellListener(new MyCellListener());//이벤트에 자신이 정의한 리스너 붙임
 
         mButtonNext.setOnClickListener(new MyButtonListener());//이벤트에 자신이 정의한 리스너 붙임
         
+        
+        
+        
+        
+        
+        
+        
+        
+        //////////
         sp = new SoundPool(1,AudioManager.STREAM_MUSIC,0);
-        sound = sp.load(this, R.raw.winsound,1);
-    }
+        winSound = sp.load(this, R.raw.winsound,1); 
+        timerSound = MediaPlayer.create(this, R.raw.timersound1);
+        timerSound.setLooping(true);
+        
+        mCountDown = new CountDownTimer(11000,1000) { //11초동안 1초간격으로 줄어들면서 보여준다. 근데 실제 실행해보면 10초부터 시작.
+			
+        	
+			public void onTick(long millisUntilFinished) {
+				
+				time.setText("remain time: " + millisUntilFinished / 1000 + "sec");
+			}
+			public void onFinish() {
+				//턴넘기기
+				// TODO Auto-generated method stub
+				time.setText("");
+				finishTurn();
+			}
+		}.start();
 
+		timerSound.start();
+		/////////
+		
+		
+		
+		
+		
+		
+		
+		
+		
+    }
+    
+    
     @Override
     protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
-        super.onResume();
-
+        super.onResume(); 
+        
         State player = mGameView.getCurrentPlayer();//뷰 상에 현재 나타나는 플레이어가 누군지
         if (player == State.UNKNOWN) {//근데 만약 플레이어가 언논일때
             player = State.fromInt(getIntent().getIntExtra(EXTRA_START_PLAYER, 1));//1로 바꺼줌
             if (!checkGameFinished(player)) {//게임이 끝났는지 체크해서 안끝났으면
-                selectTurn(player);//그 플레이어의 턴으로 해쥼
+            	selectTurn(player);//그 플레이어의 턴으로 해쥼
             }
         }
         /*if (player == State.PLAYER2) {//플레이어2(현재는 컴퓨터)의 턴일경우
@@ -114,7 +191,7 @@ public class GameActivity extends Activity {
 
 
     private State selectTurn(State player) {// 골르는 차례
-        mGameView.setCurrentPlayer(player);//일단 현재가 누구의 턴인지 해주고
+    	mGameView.setCurrentPlayer(player);//일단 현재가 누구의 턴인지 해주고
         mButtonNext.setEnabled(false);//다음차례 가는버튼은 일단 막아.
         //플레이어1 차례라면 셀 선택하면 저거 다시 활성화 되거든
 
@@ -145,7 +222,37 @@ public class GameActivity extends Activity {
     private class MyButtonListener implements OnClickListener {//버튼 누르기 리스너
 
         public void onClick(View v) {
-            State player = mGameView.getCurrentPlayer();//현재 플레이어의 상태 받아옴
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	////////////
+        	timerSound.pause();//여기서 stop해버리면 음악로딩파일도 아예 소멸되 다시 플레이하려면 다시 로딩해야해서 pause로 처리
+			mCountDown.cancel();
+			time.setText("");
+
+        	try {
+				Thread.sleep(300); //소리 pause 시킨 것을 인식시키기 위해 사용.
+			
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	//////////////
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	State player = mGameView.getCurrentPlayer();//현재 플레이어의 상태 받아옴
 
             if (player == State.WIN) {//플레이어가 이겼을경우
                 GameActivity.this.finish();//끝냄
@@ -164,7 +271,7 @@ public class GameActivity extends Activity {
                     mGameView.setCell(cell, player);//어떤셀에 누가 선택하였는지를 입력
                     finishTurn();//턴 엔드
                 }
-            }
+            } 	
         }
     }
 
@@ -257,6 +364,26 @@ public class GameActivity extends Activity {
             setFinished(State.EMPTY, -1, -1, -1);//그냥 끝낫다고 알려줌. 승자 없이
             return true;//그리고 끝냄
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        //////////
+        //승자가 결정되지 않앗으니깐 소리랑 타이머 다시 돌림
+        timerSound.start();
+    	mCountDown.start();
+    	/////////
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         return false;//모든 조건 다 돌렷는데도 게임이 안끝나면 걍 false
     }
 
@@ -282,13 +409,53 @@ public class GameActivity extends Activity {
             setResult(1,i);
         } else if (player == State.PLAYER1) {//이긴놈이 플레이어1 일땐
             text = getString(R.string.player1_win);//플레이어 1이 이겻다는 스트링
-            sp.play(sound, 1, 1, 0, 0, 1);
+            
+            
+            
+            
+            
+            
+            
+            //////////
+            sp.play(winSound, 1, 1, 0, 0, 1);
+            timerSound.stop(); //아예 타이머소리꺼버림, start해도 실행안됨, 다시 onCreate되어야 실행됨.
+            mCountDown.cancel();
+            time.setText("");
+            ////////////
+            
+            
+            
+            
+            
+            
+            
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("Player",1);
             setResult(1,i);
         } else {//이긴사람이 없지도, 1도 아니라면
             text = getString(R.string.player2_win);// 플레이어 2가 이겻겟지?
-            sp.play(sound, 1, 1, 0, 0, 1);
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            //////////
+            sp.play(winSound, 1, 1, 0, 0, 1);
+            timerSound.stop();
+            mCountDown.cancel();
+            time.setText("");
+            ///////////
+            
+            
+            
+            
+            
+            
+            
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("Player",2);
             setResult(1,i);

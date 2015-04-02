@@ -18,6 +18,7 @@ package com.example.android.tictactoe;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,15 +31,70 @@ public class MainActivity extends Activity {
 	private int player1win = 0;
 	private int player2win = 0;
 	
+	
+	
+	
+	
+	
+	
+	///////
+	private MediaPlayer bgm;
+	//////
+	
+	
+	
+	
+	
+	
+	
+	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        
+        
+        
+        
+        
+        ////////
+        bgm = MediaPlayer.create(this, R.raw.bgm);
+        bgm.setLooping(true);
+        bgm.start();
+        /////////
+        
+        
+        
+        
+        
+        
+        
+        
         startActivity(new Intent(this, LoadingActivity.class));
         findViewById(R.id.start_player).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
                 startGame(true);//사람이 먼저 시작하는 start game로 시작
+                
+                
+                
+                
+                
+                
+                /////
+                bgm.pause(); //여기서 stop해버리면 bgm데이터가 날라가 메인으로 돌아왔을때 start하려면 다시 설정해줘야 해서 pause로 처리 
+                ///////
+                
+                
+                
+                
+                
+                
+                
+                
+                
             }
         });
 
@@ -46,6 +102,25 @@ public class MainActivity extends Activity {
                 new OnClickListener() {
             public void onClick(View v) {
                 startGame(false);//컴퓨터가 먼저 시작하는 start game로 시작
+            
+                
+                
+                
+                
+                
+                
+                
+                ///////
+                bgm.pause();
+                ///////
+                
+                
+                
+                
+                
+                
+                
+                
             }
         });
     }
@@ -60,6 +135,23 @@ public class MainActivity extends Activity {
     }
     protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
         super.onResume();
+        
+        
+        
+        
+        
+        
+        ///////
+        bgm.start();
+        ///////
+        
+        
+        
+        
+        
+        
+        
+        
         if(player1win != 0 || player2win != 0){
         	Toast.makeText(MainActivity.this, "player1 score " + player1win + " win, "+ player2win + " lose \n" +  "player2 score " + player2win + " win, "+ player1win + " lose ", Toast.LENGTH_LONG).show();
         }
