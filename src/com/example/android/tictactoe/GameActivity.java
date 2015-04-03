@@ -56,9 +56,6 @@ public class GameActivity extends Activity {
     
     
     
-    
-    
-    
     //////
     private SoundPool sp;
     private int winSound;
@@ -66,10 +63,6 @@ public class GameActivity extends Activity {
     private CountDownTimer mCountDown ; 
     private TextView time;//타이머 남은 시간 표시
     //////
-    
-    
-    
-    
     
     
     
