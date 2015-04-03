@@ -161,11 +161,14 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	// TODO Auto-generated method stub
     	super.onActivityResult(requestCode, resultCode, data);
-    	int score = data.getExtras().getInt("Player");
-    	if(score == 1){
-    		player1win += 1;
-    	}else if (score == 2){
-    		player2win += 1;
+    	if(data != null ){
+    		int score = data.getExtras().getInt("Player");
+        	if(score == 1){
+        		player1win += 1;
+        	}else if (score == 2){
+        		player2win += 1;
+        	}
     	}
+    	
     }
 }
