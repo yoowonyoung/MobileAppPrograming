@@ -54,6 +54,8 @@ public class GameActivity extends Activity {
     private TextView mInfoView;//누가 이겼는지 나타내는 텍스트 뷰
     private Button mButtonNext;
     
+      
+    
     
     
     //////
