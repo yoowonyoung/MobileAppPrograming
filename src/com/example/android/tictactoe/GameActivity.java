@@ -65,6 +65,7 @@ public class GameActivity extends Activity {
     private MediaPlayer timerSound;//타이머소리를 mediaplayer로 처리, soundpool은 oncreate에서 바로 플레이 할 수 없고, play했을때 안되는 부분도 많다.무슨 핸들러나 스래드 쓰면 된다는데 잘 모르겄음
     private CountDownTimer mCountDown ; 
     private TextView time;//타이머 남은 시간 표시
+    private int countDownPause; //CountDownTimer가 pause상태(wait)상태이면 1, 아니면 0  
     //////
     
     
@@ -189,6 +190,26 @@ public class GameActivity extends Activity {
     @Override
     protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
         super.onResume(); 
+        
+        
+        
+        
+        //////////
+        timerSound.start();
+        mCountDown.start();
+        /*
+        if(countDownPause == 1) //이렇게 안해주면 에러 나드라
+        {
+        	mCountDown.notify();
+        	countDownPause = 0;
+        }
+        */
+        //////////
+        
+        
+        
+        
+        
         
         State player = mGameView.getCurrentPlayer();//뷰 상에 현재 나타나는 플레이어가 누군지
         if (player == State.UNKNOWN) {//근데 만약 플레이어가 언논일때
@@ -512,9 +533,38 @@ public class GameActivity extends Activity {
     
     
     ////////
+    public void onPause() 
+    {
+        super.onPause();
+        //쓰레드나 사운드는 강제종료시 문제 안생기려면 정지(릴리즈-음악 or cancel-스레드) 후에 null값 넣어주어야 한다.   
+        if (timerSound != null) 
+        {
+        	timerSound.pause();
+
+        }
+        
+        if(mCountDown != null) 
+        {
+        	mCountDown.cancel();
+        }
+        
+        /* 원래는 wait써서 완벽하게 했던 것 유지해야 되는데.. 에러남. 그래서 그냥 타이머 종료하고 재시작하는 식으로 만듦.
+        if(mCountDown != null)
+        {
+			try {
+				mCountDown.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			countDownPause = 1;
+        }
+        */
+    }
     public void onDestroy() 
     {
         super.onDestroy();
+        
         //쓰레드나 사운드는 강제종료시 문제 안생기려면 정지(릴리즈-음악 or cancel-스레드) 후에 null값 넣어주어야 한다.   
         if (timerSound != null) 
         {
@@ -522,7 +572,7 @@ public class GameActivity extends Activity {
         	timerSound = null;
 
         }
-        if( mCountDown != null)
+        if( mCountDown != null )
         {
         	mCountDown.cancel();
         	mCountDown = null;

@@ -52,9 +52,9 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main); 
         
-        
+        startActivity(new Intent(this, LoadingActivity.class));
         
         
         
@@ -70,9 +70,6 @@ public class MainActivity extends Activity {
         
         
         
-        
-        
-        startActivity(new Intent(this, LoadingActivity.class));
         findViewById(R.id.start_player).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
@@ -177,6 +174,16 @@ public class MainActivity extends Activity {
     
     
     ///////
+    public void onPause() 
+    {
+        super.onPause();
+        
+        if (bgm != null) 
+        {
+          bgm.pause();
+
+        }
+    }
     public void onDestroy() 
     {
         super.onDestroy();
