@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//í…ŒìŠ¤íŠ¸
+
 package com.example.android.tictactoe;
 
 import java.util.Random;
@@ -45,26 +45,31 @@ public class GameActivity extends Activity {
     public static final String EXTRA_START_PLAYER =
         "com.example.android.tictactoe.library.GameActivity.EXTRA_START_PLAYER";
 
-    private static final int MSG_COMPUTER_TURN = 1;//ì‘ë‹µì„ ì‹œìž‘í•  ì‹œê°„
-    private static final long COMPUTER_DELAY_MS = 500;//ì»´í“¨í„° ì‘ë‹µ ì§€ì—°ì‹œê°„
+    private static final int MSG_COMPUTER_TURN = 1;//ÀÀ´äÀ» ½ÃÀÛÇÒ ½Ã°£
+    private static final long COMPUTER_DELAY_MS = 500;//ÄÄÇ»ÅÍ ÀÀ´ä Áö¿¬½Ã°£
 
-    private Handler mHandler = new Handler(new MyHandlerCallback());//ì½œë°± í•¸ë“¤ëŸ¬
+    private Handler mHandler = new Handler(new MyHandlerCallback());//ÄÝ¹é ÇÚµé·¯
     private Random mRnd = new Random();
-    private GameView mGameView;//í™”ë©´ ë‚˜íƒ€ë‚´ëŠ” gameView
-    private TextView mInfoView;//ëˆ„ê°€ ì´ê²¼ëŠ”ì§€ ë‚˜íƒ€ë‚´ëŠ” í…ìŠ¤íŠ¸ ë·°
+    private GameView mGameView;//È­¸é ³ªÅ¸³»´Â gameView
+    private TextView mInfoView;//´©°¡ ÀÌ°å´ÂÁö ³ªÅ¸³»´Â ÅØ½ºÆ® ºä
     private Button mButtonNext;
     
-      
+    
+    
     
     
     
     //////
     private SoundPool sp;
     private int winSound;
-    private MediaPlayer timerSound;//íƒ€ì´ë¨¸ì†Œë¦¬ë¥¼ mediaplayerë¡œ ì²˜ë¦¬, soundpoolì€ oncreateì—ì„œ ë°”ë¡œ í”Œë ˆì´ í•  ìˆ˜ ì—†ê³ , playí–ˆì„ë•Œ ì•ˆë˜ëŠ” ë¶€ë¶„ë„ ë§Žë‹¤.ë¬´ìŠ¨ í•¸ë“¤ëŸ¬ë‚˜ ìŠ¤ëž˜ë“œ ì“°ë©´ ëœë‹¤ëŠ”ë° ìž˜ ëª¨ë¥´ê²„ìŒ
+    private MediaPlayer timerSound;//Å¸ÀÌ¸Ó¼Ò¸®¸¦ mediaplayer·Î Ã³¸®, soundpoolÀº oncreate¿¡¼­ ¹Ù·Î ÇÃ·¹ÀÌ ÇÒ ¼ö ¾ø°í, playÇßÀ»¶§ ¾ÈµÇ´Â ºÎºÐµµ ¸¹´Ù.¹«½¼ ÇÚµé·¯³ª ½º·¡µå ¾²¸é µÈ´Ù´Âµ¥ Àß ¸ð¸£°ÎÀ½
     private CountDownTimer mCountDown ; 
-    private TextView time;//íƒ€ì´ë¨¸ ë‚¨ì€ ì‹œê°„ í‘œì‹œ
+    private TextView time;//Å¸ÀÌ¸Ó ³²Àº ½Ã°£ Ç¥½Ã
     //////
+    
+    
+    
+    
     
     
     
@@ -118,9 +123,9 @@ public class GameActivity extends Activity {
         
         mGameView.setFocusable(true);
         mGameView.setFocusableInTouchMode(true);
-        mGameView.setCellListener(new MyCellListener());//ì´ë²¤íŠ¸ì— ìžì‹ ì´ ì •ì˜í•œ ë¦¬ìŠ¤ë„ˆ ë¶™ìž„
+        mGameView.setCellListener(new MyCellListener());//ÀÌº¥Æ®¿¡ ÀÚ½ÅÀÌ Á¤ÀÇÇÑ ¸®½º³Ê ºÙÀÓ
 
-        mButtonNext.setOnClickListener(new MyButtonListener());//ì´ë²¤íŠ¸ì— ìžì‹ ì´ ì •ì˜í•œ ë¦¬ìŠ¤ë„ˆ ë¶™ìž„
+        mButtonNext.setOnClickListener(new MyButtonListener());//ÀÌº¥Æ®¿¡ ÀÚ½ÅÀÌ Á¤ÀÇÇÑ ¸®½º³Ê ºÙÀÓ
         
         
         
@@ -136,17 +141,33 @@ public class GameActivity extends Activity {
         timerSound = MediaPlayer.create(this, R.raw.timersound1);
         timerSound.setLooping(true);
         
-        mCountDown = new CountDownTimer(11000,1000) { //11ì´ˆë™ì•ˆ 1ì´ˆê°„ê²©ìœ¼ë¡œ ì¤„ì–´ë“¤ë©´ì„œ ë³´ì—¬ì¤€ë‹¤. ê·¼ë° ì‹¤ì œ ì‹¤í–‰í•´ë³´ë©´ 10ì´ˆë¶€í„° ì‹œìž‘.
+        mCountDown = new CountDownTimer(11000,1000) { //11ÃÊµ¿¾È 1ÃÊ°£°ÝÀ¸·Î ÁÙ¾îµé¸é¼­ º¸¿©ÁØ´Ù. ±Ùµ¥ ½ÇÁ¦ ½ÇÇàÇØº¸¸é 10ÃÊºÎÅÍ ½ÃÀÛ.
 			
         	
 			public void onTick(long millisUntilFinished) {
 				
 				time.setText("remain time: " + millisUntilFinished / 1000 + "sec");
+				
 			}
+			
 			public void onFinish() {
-				//í„´ë„˜ê¸°ê¸°
-				// TODO Auto-generated method stub
-				time.setText("");
+				//ÅÏ³Ñ±â±â
+			
+		
+				
+				
+				
+				
+				////////////ÅÏ ³Ñ¾î°¨À» ´õ Á¤È®È÷ ÀÎ½Ä½ÃÅ°±â À§ÇØ »ç¿ë
+				Toast toast = Toast.makeText(GameActivity.this, "your turn is time over!!!!", Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				//////////
+				
+				
+				
+				
+				
 				finishTurn();
 			}
 		}.start();
@@ -166,198 +187,227 @@ public class GameActivity extends Activity {
     
     
     @Override
-    protected void onResume() {//ì¼ì‹œì •ì§€ ë«ë‹¤ê°€ í’€ë¦´ë•Œ ì”¨ìŠ¤í…œì—ì„œ ë¶ˆëŸ¬ì£¼ëŠ” ë¶€ë¶„
+    protected void onResume() {//ÀÏ½ÃÁ¤Áö µÌ´Ù°¡ Ç®¸±¶§ ¾¾½ºÅÛ¿¡¼­ ºÒ·¯ÁÖ´Â ºÎºÐ
         super.onResume(); 
         
-        State player = mGameView.getCurrentPlayer();//ë·° ìƒì— í˜„ìž¬ ë‚˜íƒ€ë‚˜ëŠ” í”Œë ˆì´ì–´ê°€ ëˆ„êµ°ì§€
-        if (player == State.UNKNOWN) {//ê·¼ë° ë§Œì•½ í”Œë ˆì´ì–´ê°€ ì–¸ë…¼ì¼ë•Œ
-            player = State.fromInt(getIntent().getIntExtra(EXTRA_START_PLAYER, 1));//1ë¡œ ë°”êº¼ì¤Œ
-            if (!checkGameFinished(player)) {//ê²Œìž„ì´ ëë‚¬ëŠ”ì§€ ì²´í¬í•´ì„œ ì•ˆëë‚¬ìœ¼ë©´
-            	selectTurn(player);//ê·¸ í”Œë ˆì´ì–´ì˜ í„´ìœ¼ë¡œ í•´ì¥¼
+        State player = mGameView.getCurrentPlayer();//ºä »ó¿¡ ÇöÀç ³ªÅ¸³ª´Â ÇÃ·¹ÀÌ¾î°¡ ´©±ºÁö
+        if (player == State.UNKNOWN) {//±Ùµ¥ ¸¸¾à ÇÃ·¹ÀÌ¾î°¡ ¾ð³íÀÏ¶§
+            player = State.fromInt(getIntent().getIntExtra(EXTRA_START_PLAYER, 1));//1·Î ¹Ù²¨ÁÜ
+            if (!checkGameFinished(player)) {//°ÔÀÓÀÌ ³¡³µ´ÂÁö Ã¼Å©ÇØ¼­ ¾È³¡³µÀ¸¸é
+            	selectTurn(player);//±× ÇÃ·¹ÀÌ¾îÀÇ ÅÏÀ¸·Î ÇØÁí
             }
         }
-        /*if (player == State.PLAYER2) {//í”Œë ˆì´ì–´2(í˜„ìž¬ëŠ” ì»´í“¨í„°)ì˜ í„´ì¼ê²½ìš°
-            mHandler.sendEmptyMessageDelayed(MSG_COMPUTER_TURN, COMPUTER_DELAY_MS);//0.5ì´ˆ ë”œë ˆì´ í•´ì£¼ë©´ì„œ ì»´í“¨í„°ê°€ í•œì¹¸ë†“ëŠ” ë©”ì¨ë“œ
+        /*if (player == State.PLAYER2) {//ÇÃ·¹ÀÌ¾î2(ÇöÀç´Â ÄÄÇ»ÅÍ)ÀÇ ÅÏÀÏ°æ¿ì
+            mHandler.sendEmptyMessageDelayed(MSG_COMPUTER_TURN, COMPUTER_DELAY_MS);//0.5ÃÊ µô·¹ÀÌ ÇØÁÖ¸é¼­ ÄÄÇ»ÅÍ°¡ ÇÑÄ­³õ´Â ¸Þ½áµå
         }*/
-        if (player == State.WIN) {//ê·¼ë° í”Œë ˆì´ì–´ ìƒíƒœê°€ ì´ê¸´ìƒíƒœë©´
-            setWinState(mGameView.getWinner());//ëˆ„ê°€ ì´ê²¼ëŠ”ì§€ ë°›ì•„ì™€ì„œ ì´ê²¼ë‹¤ê³  í•´ì¤Œ
+        if (player == State.WIN) {//±Ùµ¥ ÇÃ·¹ÀÌ¾î »óÅÂ°¡ ÀÌ±ä»óÅÂ¸é
+            setWinState(mGameView.getWinner());//´©°¡ ÀÌ°å´ÂÁö ¹Þ¾Æ¿Í¼­ ÀÌ°å´Ù°í ÇØÁÜ
         }
     }
 
 
-    private State selectTurn(State player) {// ê³¨ë¥´ëŠ” ì°¨ë¡€
-    	mGameView.setCurrentPlayer(player);//ì¼ë‹¨ í˜„ìž¬ê°€ ëˆ„êµ¬ì˜ í„´ì¸ì§€ í•´ì£¼ê³ 
-        mButtonNext.setEnabled(false);//ë‹¤ìŒì°¨ë¡€ ê°€ëŠ”ë²„íŠ¼ì€ ì¼ë‹¨ ë§‰ì•„.
-        //í”Œë ˆì´ì–´1 ì°¨ë¡€ë¼ë©´ ì…€ ì„ íƒí•˜ë©´ ì €ê±° ë‹¤ì‹œ í™œì„±í™” ë˜ê±°ë“ 
+    private State selectTurn(State player) {// °ñ¸£´Â Â÷·Ê
+    	mGameView.setCurrentPlayer(player);//ÀÏ´Ü ÇöÀç°¡ ´©±¸ÀÇ ÅÏÀÎÁö ÇØÁÖ°í
+        mButtonNext.setEnabled(false);//´ÙÀ½Â÷·Ê °¡´Â¹öÆ°Àº ÀÏ´Ü ¸·¾Æ.
+        //ÇÃ·¹ÀÌ¾î1 Â÷·Ê¶ó¸é ¼¿ ¼±ÅÃÇÏ¸é Àú°Å ´Ù½Ã È°¼ºÈ­ µÇ°Åµç
 
-        if (player == State.PLAYER1) {//í”Œë ˆì´ì–´ 1 ì°¨ë¡€ë¼ë©´
-            mInfoView.setText(R.string.player1_turn);//í”Œë ˆì´ì–´ 1ì˜ ì°¨ë¡€ë¼ê³  í•´ì£¼ê³ 
-            mGameView.setEnabled(true);//ê²Œìž„íŒì„ í„°ì¹˜ ê°€ëŠ¥í•˜ê²Œ í•´ì¤˜
+        if (player == State.PLAYER1) {//ÇÃ·¹ÀÌ¾î 1 Â÷·Ê¶ó¸é
+            mInfoView.setText(R.string.player1_turn);//ÇÃ·¹ÀÌ¾î 1ÀÇ Â÷·Ê¶ó°í ÇØÁÖ°í
+            mGameView.setEnabled(true);//°ÔÀÓÆÇÀ» ÅÍÄ¡ °¡´ÉÇÏ°Ô ÇØÁà
 
-        } else if (player == State.PLAYER2) {//í”Œë ˆì´ì–´2(ì»´í“¨í„°)ì˜ ì°¨ë¡€ë¼ë©´
-            mInfoView.setText(R.string.player2_turn);//í”Œë ˆì´ì–´2ì˜ ì°¨ë¡€ë¼ê³  í•´ì£¼ê³ 
-            mGameView.setEnabled(true);//ê²Œìž„íŒ í„°ì¹˜ë¥¼ ë§‰ì•„
+        } else if (player == State.PLAYER2) {//ÇÃ·¹ÀÌ¾î2(ÄÄÇ»ÅÍ)ÀÇ Â÷·Ê¶ó¸é
+            mInfoView.setText(R.string.player2_turn);//ÇÃ·¹ÀÌ¾î2ÀÇ Â÷·Ê¶ó°í ÇØÁÖ°í
+            mGameView.setEnabled(true);//°ÔÀÓÆÇ ÅÍÄ¡¸¦ ¸·¾Æ
         }
 
-        return player;//ê·¸ë¦¬ê³  í”Œë ˆì´ì–´ë¥¼ ë°˜í™˜. í„´ ëë‚´ê¸° í• ë•Œ, ë‹¤ìŒ í”Œë ˆì´ì–´ë¥¼ ì§€ì •í•´ì£¼ê¸° ìœ„í•´ ì¨ì•¼ë˜ê±°ë“ 
+        return player;//±×¸®°í ÇÃ·¹ÀÌ¾î¸¦ ¹ÝÈ¯. ÅÏ ³¡³»±â ÇÒ¶§, ´ÙÀ½ ÇÃ·¹ÀÌ¾î¸¦ ÁöÁ¤ÇØÁÖ±â À§ÇØ ½á¾ßµÇ°Åµç
     }
 
-    private class MyCellListener implements ICellListener {//ì…€ ì„ íƒ ë¦¬ìŠ¤ë„ˆ
+    private class MyCellListener implements ICellListener {//¼¿ ¼±ÅÃ ¸®½º³Ê
         public void onCellSelected() {
-            if (mGameView.getCurrentPlayer() == State.PLAYER1) {//í”Œë ˆì´ì–´ê°€ ì‚¬ëžŒì¼ë•Œë§Œ
-                int cell = mGameView.getSelection();//ìž…ë ¥ëœ ì…€ì„ ë°›ì•„ ì˜´
-                mButtonNext.setEnabled(cell >= 0);//ì œëŒ€ë¡œ ëœ ì…€ì„ ì„ íƒí•œê²½ìš° ë²„íŠ¼ í™œì„±í™”
-            }else if (mGameView.getCurrentPlayer() == State.PLAYER2) {//í”Œë ˆì´ì–´ê°€ ì‚¬ëžŒì¼ë•Œë§Œ
-                int cell = mGameView.getSelection();//ìž…ë ¥ëœ ì…€ì„ ë°›ì•„ ì˜´
-                mButtonNext.setEnabled(cell >= 0);//ì œëŒ€ë¡œ ëœ ì…€ì„ ì„ íƒí•œê²½ìš° ë²„íŠ¼ í™œì„±í™”
+            if (mGameView.getCurrentPlayer() == State.PLAYER1) {//ÇÃ·¹ÀÌ¾î°¡ »ç¶÷ÀÏ¶§¸¸
+                int cell = mGameView.getSelection();//ÀÔ·ÂµÈ ¼¿À» ¹Þ¾Æ ¿È
+                mButtonNext.setEnabled(cell >= 0);//Á¦´ë·Î µÈ ¼¿À» ¼±ÅÃÇÑ°æ¿ì ¹öÆ° È°¼ºÈ­
+            }else if (mGameView.getCurrentPlayer() == State.PLAYER2) {//ÇÃ·¹ÀÌ¾î°¡ »ç¶÷ÀÏ¶§¸¸
+                int cell = mGameView.getSelection();//ÀÔ·ÂµÈ ¼¿À» ¹Þ¾Æ ¿È
+                mButtonNext.setEnabled(cell >= 0);//Á¦´ë·Î µÈ ¼¿À» ¼±ÅÃÇÑ°æ¿ì ¹öÆ° È°¼ºÈ­
             }
         }
     }
 
-    private class MyButtonListener implements OnClickListener {//ë²„íŠ¼ ëˆ„ë¥´ê¸° ë¦¬ìŠ¤ë„ˆ
+    private class MyButtonListener implements OnClickListener {//¹öÆ° ´©¸£±â ¸®½º³Ê
 
         public void onClick(View v) {
         	
         	
         	
+
         	
-        	
-        	
-        	
-        	
+        	/*finishTurn ¸Þ¼Òµå·Î ¿Å±è
         	////////////
-        	timerSound.pause();//ì—¬ê¸°ì„œ stopí•´ë²„ë¦¬ë©´ ìŒì•…ë¡œë”©íŒŒì¼ë„ ì•„ì˜ˆ ì†Œë©¸ë˜ ë‹¤ì‹œ í”Œë ˆì´í•˜ë ¤ë©´ ë‹¤ì‹œ ë¡œë”©í•´ì•¼í•´ì„œ pauseë¡œ ì²˜ë¦¬
+        	timerSound.pause();//¿©±â¼­ stopÇØ¹ö¸®¸é À½¾Ç·ÎµùÆÄÀÏµµ ¾Æ¿¹ ¼Ò¸êµÇ ´Ù½Ã ÇÃ·¹ÀÌÇÏ·Á¸é ´Ù½Ã ·ÎµùÇØ¾ßÇØ¼­ pause·Î Ã³¸®
 			mCountDown.cancel();
 			time.setText("");
-
+			
+			
         	try {
-				Thread.sleep(300); //ì†Œë¦¬ pause ì‹œí‚¨ ê²ƒì„ ì¸ì‹ì‹œí‚¤ê¸° ìœ„í•´ ì‚¬ìš©.
+				Thread.sleep(200); //¼Ò¸® pause ½ÃÅ² °ÍÀ» ÀÎ½Ä½ÃÅ°±â À§ÇØ »ç¿ë.
 			
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
         	//////////////
+        	*/
+     
         	
         	
         	
         	
-        	
-        	
-        	
-        	
-        	
-        	State player = mGameView.getCurrentPlayer();//í˜„ìž¬ í”Œë ˆì´ì–´ì˜ ìƒíƒœ ë°›ì•„ì˜´
+        	State player = mGameView.getCurrentPlayer();//ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ ¹Þ¾Æ¿È
 
-            if (player == State.WIN) {//í”Œë ˆì´ì–´ê°€ ì´ê²¼ì„ê²½ìš°
-                GameActivity.this.finish();//ëëƒ„
+            if (player == State.WIN) {//ÇÃ·¹ÀÌ¾î°¡ ÀÌ°åÀ»°æ¿ì
+                GameActivity.this.finish();//³¡³¿
 
-            } else if (player == State.PLAYER1) {//í”Œë ˆì´ì–´1(ì‚¬ìš©ìž)ê°€ ëˆ„ë¥¸ê²½ìš°
-                int cell = mGameView.getSelection();//ëˆ„ë¥¸ ì…€ì„ ë°›ì•„ì„œ
+            } else if (player == State.PLAYER1) {//ÇÃ·¹ÀÌ¾î1(»ç¿ëÀÚ)°¡ ´©¸¥°æ¿ì
+                int cell = mGameView.getSelection();//´©¸¥ ¼¿À» ¹Þ¾Æ¼­
                 if (cell >= 0) {
-                    mGameView.stopBlink();//ê¹œë¹¡ì´ëŠ”ê±¸ ë©ˆì¶”ê³ 
-                    mGameView.setCell(cell, player);//ì–´ë–¤ì…€ì— ëˆ„ê°€ ì„ íƒí•˜ì˜€ëŠ”ì§€ë¥¼ ìž…ë ¥
-                    finishTurn();//í„´ ì—”ë“œ
+                    mGameView.stopBlink();//±ôºýÀÌ´Â°É ¸ØÃß°í
+                    mGameView.setCell(cell, player);//¾î¶²¼¿¿¡ ´©°¡ ¼±ÅÃÇÏ¿´´ÂÁö¸¦ ÀÔ·Â
+                    finishTurn();//ÅÏ ¿£µå
                 }
-            } else if (player == State.PLAYER2) {//í”Œë ˆì´ì–´2(ì‚¬ìš©ìž)ê°€ ëˆ„ë¥¸ê²½ìš°
-                int cell = mGameView.getSelection();//ëˆ„ë¥¸ ì…€ì„ ë°›ì•„ì„œ
+            } else if (player == State.PLAYER2) {//ÇÃ·¹ÀÌ¾î2(»ç¿ëÀÚ)°¡ ´©¸¥°æ¿ì
+                int cell = mGameView.getSelection();//´©¸¥ ¼¿À» ¹Þ¾Æ¼­
                 if (cell >= 0) {
-                    mGameView.stopBlink();//ê¹œë¹¡ì´ëŠ”ê±¸ ë©ˆì¶”ê³ 
-                    mGameView.setCell(cell, player);//ì–´ë–¤ì…€ì— ëˆ„ê°€ ì„ íƒí•˜ì˜€ëŠ”ì§€ë¥¼ ìž…ë ¥
-                    finishTurn();//í„´ ì—”ë“œ
+                    mGameView.stopBlink();//±ôºýÀÌ´Â°É ¸ØÃß°í
+                    mGameView.setCell(cell, player);//¾î¶²¼¿¿¡ ´©°¡ ¼±ÅÃÇÏ¿´´ÂÁö¸¦ ÀÔ·Â
+                    finishTurn();//ÅÏ ¿£µå
                 }
             } 	
         }
     }
 
-    private class MyHandlerCallback implements Callback {//ì½œë°± í•¸ë“¤ëŸ¬
-        public boolean handleMessage(Message msg) {//ë©”ì‹œì§€ë¥¼ í•¸ë“¤í•˜ëŠ”ë°
-            if (msg.what == MSG_COMPUTER_TURN) {//ì´ê±° ë©”ì‹œì§€ ë‚´ìš©ì´ ë­”ì§€ í™•ì¸í•˜ëŠ” ë¶€ë¶„ì¸ê°€ë´
+    private class MyHandlerCallback implements Callback {//ÄÝ¹é ÇÚµé·¯
+        public boolean handleMessage(Message msg) {//¸Þ½ÃÁö¸¦ ÇÚµéÇÏ´Âµ¥
+            if (msg.what == MSG_COMPUTER_TURN) {//ÀÌ°Å ¸Þ½ÃÁö ³»¿ëÀÌ ¹ºÁö È®ÀÎÇÏ´Â ºÎºÐÀÎ°¡ºÁ
 
                 // Pick a non-used cell at random. That's about all the AI you need for this game.
-                State[] data = mGameView.getData();//ê²Œìž„íŒì„ ë°›ì•„ì™€ì„œ
+                State[] data = mGameView.getData();//°ÔÀÓÆÇÀ» ¹Þ¾Æ¿Í¼­
                 int used = 0;
-                while (used != 0x1F) {//ì´ 0x1fë¼ëŠ”ê²Œ êµ¬ë¶„ë¬¸ìž ë¼ëŠ”ê±°ê°™ì• , 
-                    int index = mRnd.nextInt(16);//ëžœë¤ìœ¼ë¡œ 0~9ê¹Œì§€ ë§Œë“¤ì–´ì„œ
-                    if (((used >> index) & 1) == 0) {//usedì˜ 2ì§„ìˆ˜ í‘œí˜„ì„ ì˜¤ë¥¸ìª½ìœ¼ë¡œ index ë¹„íŠ¸ë§Œí¼ ì˜®ê¸´ê²Œ, 1ì´ ì•„ë‹ˆë¼ë©´..ì•¼ ì´ê±° ë§ì¢€ ì–´ë µë‹¤
-                        used |= 1 << index;//ì¡¸ì–´ë µ;; ê·¸ë ‡ê²Œ í•´ì„œ ë‚˜ì˜¨ usedê³¼ 1ì„ ë¹„íŠ¸ë‹¨ìœ„ ë…¼ë¦¬í•©(OR)ë¥¼ í•´ì£¼ê³  ì™¼ìª½ìœ¼ë¡œ indexë§Œí¼ ì™¼ìª½ìœ¼ë¡œ ë¹„íŠ¸ì´ë™
-                        if (data[index] == State.EMPTY) {//ê·¼ë° ê²°êµ­ usedëŠ” ë°˜ë³µì„ ìœ„í•œê±°ì¼ ë¿ì¸ë° ì´ë ‡ê²Œ ë³µìž¡í•˜ê²Œ í•´ì•¼í•˜ë‚˜?
-                        	//ì•„ë¬´íŠ¼ ê·¸ëž˜ì„œ ê²Œìž„íŒì˜ indexë²ˆÂŠ ì¹¸ì´ ë¹„ì–´ìžˆìœ¼ë©´
-                            mGameView.setCell(index, mGameView.getCurrentPlayer());//í”Œë ˆì´ì–´ 2ê°€ Â‡Jë‹¤ê³  í•˜ê³ 
-                            break;//ë°˜ë³µë¬¸ ì¢…ë£Œ
+                while (used != 0x1F) {//ÀÌ 0x1f¶ó´Â°Ô ±¸ºÐ¹®ÀÚ ¶ó´Â°Å°°¾Ö, 
+                    int index = mRnd.nextInt(16);//·£´ýÀ¸·Î 0~9±îÁö ¸¸µé¾î¼­
+                    if (((used >> index) & 1) == 0) {//usedÀÇ 2Áø¼ö Ç¥ÇöÀ» ¿À¸¥ÂÊÀ¸·Î index ºñÆ®¸¸Å­ ¿Å±ä°Ô, 1ÀÌ ¾Æ´Ï¶ó¸é..¾ß ÀÌ°Å ¸»Á» ¾î·Æ´Ù
+                        used |= 1 << index;//Á¹¾î·Æ;; ±×·¸°Ô ÇØ¼­ ³ª¿Â used°ú 1À» ºñÆ®´ÜÀ§ ³í¸®ÇÕ(OR)¸¦ ÇØÁÖ°í ¿ÞÂÊÀ¸·Î index¸¸Å­ ¿ÞÂÊÀ¸·Î ºñÆ®ÀÌµ¿
+                        if (data[index] == State.EMPTY) {//±Ùµ¥ °á±¹ used´Â ¹Ýº¹À» À§ÇÑ°ÅÀÏ »ÓÀÎµ¥ ÀÌ·¸°Ô º¹ÀâÇÏ°Ô ÇØ¾ßÇÏ³ª?
+                        	//¾Æ¹«Æ° ±×·¡¼­ °ÔÀÓÆÇÀÇ index¹ø¤Š Ä­ÀÌ ºñ¾îÀÖÀ¸¸é
+                            mGameView.setCell(index, mGameView.getCurrentPlayer());//ÇÃ·¹ÀÌ¾î 2°¡ ‡J´Ù°í ÇÏ°í
+                            break;//¹Ýº¹¹® Á¾·á
                         }
                     }
                 }
-               finishTurn();//ê·¸ë¦¬ê³  í”Œë ˆì´ì–´2ì˜ í„´ì„ ëë‚´
-                return true;//ëëƒˆìœ¼ë‹ˆê¹Œ true
+               finishTurn();//±×¸®°í ÇÃ·¹ÀÌ¾î2ÀÇ ÅÏÀ» ³¡³»
+                return true;//³¡³ÂÀ¸´Ï±î true
             }
-            return false;//í–‰ì—¬ë‚˜ ëª»ëë‚´ë©´ false
+            return false;//Çà¿©³ª ¸ø³¡³»¸é false
         }
     }
 
-    private State getOtherPlayer(State player) {//í”Œë ˆì´ì–´ ë³€ê²½
-        return player == State.PLAYER1 ? State.PLAYER2 : State.PLAYER1;//í”Œë ˆì´ì–´1ì´ì˜€ìœ¼ë©´ 2ë¡œ, 2ì˜€ìœ¼ë©´ 1ë¡œ
+    private State getOtherPlayer(State player) {//ÇÃ·¹ÀÌ¾î º¯°æ
+        return player == State.PLAYER1 ? State.PLAYER2 : State.PLAYER1;//ÇÃ·¹ÀÌ¾î1ÀÌ¿´À¸¸é 2·Î, 2¿´À¸¸é 1·Î
     }
 
-    private void finishTurn() {//í„´ì„ ëë‚´ëŠ” ë°©ë²•ã„´
-        State player = mGameView.getCurrentPlayer();//í˜„ìž¬ì˜ í”Œë ˆì´ì–´ë¥¼ ë°›ì•„ì„œ
-        if (!checkGameFinished(player)) {//ê·¸ í”Œë ˆì´ì–´ê°€ ê²Œìž„ì„ ëëƒˆëŠ”ì§€ í™•ì¸í•œí›„
-            player = selectTurn(getOtherPlayer(player));//ë‹¤ë¥¸ í”Œë ˆì´ì–´ë¡œì˜ í„´ì„ ë„˜ê²¨ì¤Œ
+    private void finishTurn() {//ÅÏÀ» ³¡³»´Â ¹æ¹ý
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	////////////
+    	//¿ø·¡´Â ¹öÆ° ¸®½º³Ê ºÎºÐ¿¡ ÀÖ´ø °ÍÀÎµ¥, Å¸ÀÓÃÊ°ú·Î ÅÏÀ» ³Ñ±âµç ¹öÆ°À¸·Î ÅÏÀ» ³Ñ±âµç ¶È°°Àº Ã³¸®°¡ ÇÊ¿ä(Å¸ÀÌ¸Ó¼Ò¸® ÀÏ½ÃÁ¤Áö)ÇØ¼­ ¿©±â·Î ¿Å±è.
+    	timerSound.pause();//¿©±â¼­ stopÇØ¹ö¸®¸é À½¾Ç·ÎµùÆÄÀÏµµ ¾Æ¿¹ ¼Ò¸êµÅ(¾Ë¾Æ º¸´Ï, release°¡ ¼Ò¸ê½ÃÅ°´Â °ÍÀÌ°í, stopÀº ¹«½¼ ÁØºñ½Ã°£À» Áà¾ß ´Ù½Ã½ÇÇàÇÒ¼ö ÀÖ°ÔÇÑ´Ù°í ÇÔ
+    	                   //¾îÂ·µç ¹Ù·Î ´Ù½Ã ÇÃ·¹ÀÌÇØ¾ßÇØ¼­ pause·Î Ã³¸®
+		mCountDown.cancel();
+		time.setText("");
+
+    	try {
+			Thread.sleep(300); //¼Ò¸® pause ½ÃÅ² °ÍÀ» ÀÎ½Ä + ÅÏ³Ñ±è ÀÎ½Ä½ÃÅ°±â À§ÇØ »ç¿ë.
+		
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    	//////////////
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+        State player = mGameView.getCurrentPlayer();//ÇöÀçÀÇ ÇÃ·¹ÀÌ¾î¸¦ ¹Þ¾Æ¼­
+        if (!checkGameFinished(player)) {//±× ÇÃ·¹ÀÌ¾î°¡ °ÔÀÓÀ» ³¡³Â´ÂÁö È®ÀÎÇÑÈÄ
+            player = selectTurn(getOtherPlayer(player));//´Ù¸¥ ÇÃ·¹ÀÌ¾î·ÎÀÇ ÅÏÀ» ³Ñ°ÜÁÜ
             /*
-            if (player == State.PLAYER2) {//ê·¼ë° ë§Œì•½ ì»´í“¨í„° í„´ì¼ë•Œì—ëŠ”
+            if (player == State.PLAYER2) {//±Ùµ¥ ¸¸¾à ÄÄÇ»ÅÍ ÅÏÀÏ¶§¿¡´Â
                 mHandler.sendEmptyMessageDelayed(MSG_COMPUTER_TURN, COMPUTER_DELAY_MS);
-                //ì‘ë‹µ ì‹œìž‘ì‹œê°„ì— ì‹œìž‘í•˜ì—¬ì„œ  ì‘ë‹µ ì§€ì—° ì‹œê°„ê¹Œì§€ ëŒ€ê¸° í•œ í›„ ë©”ì„¸ì§€ ë°œì†¡
-                //ê·¸ëƒ¥ ë‹¨ìˆœížˆ ì¹´ìš´í„° í•´ì£¼ëŠ” ë¶€ë¶„ì´ë¼ê³  ìƒê°í•˜ë©´ ëœë‹¤ 0.5ì´ˆ ì¹´ìš´íŒ…
+                //ÀÀ´ä ½ÃÀÛ½Ã°£¿¡ ½ÃÀÛÇÏ¿©¼­  ÀÀ´ä Áö¿¬ ½Ã°£±îÁö ´ë±â ÇÑ ÈÄ ¸Þ¼¼Áö ¹ß¼Û
+                //±×³É ´Ü¼øÈ÷ Ä«¿îÅÍ ÇØÁÖ´Â ºÎºÐÀÌ¶ó°í »ý°¢ÇÏ¸é µÈ´Ù 0.5ÃÊ Ä«¿îÆÃ
             }*/
         }
     }
 
-    public boolean checkGameFinished(State player) {//ê²Œìž„ì´ ëë‚«ëŠ”ì§€ í™•ì¸
-        State[] data = mGameView.getData();//ê²Œìž„ë·°ì˜ ìƒíƒœë¥¼ ë°›ìŒ
-        boolean full = true;//ê½‰ ì°»ëŠ”ì§€ í™•ì¸í•˜ëŠ” í”Œëž˜ê·¸ì¸ë“¯
+    public boolean checkGameFinished(State player) {//°ÔÀÓÀÌ ³¡³´´ÂÁö È®ÀÎ
+        State[] data = mGameView.getData();//°ÔÀÓºäÀÇ »óÅÂ¸¦ ¹ÞÀ½
+        boolean full = true;//²Ë Âþ´ÂÁö È®ÀÎÇÏ´Â ÇÃ·¡±×ÀÎµí
 
         int col = -1;
         int row = -1;
         int diag = -1;
 
-        // check rows ê°€ë¡œì¤„ í™•ì¸
-        for (int j = 0, k = 0; j < 4; j++, k += 4) {//ë°˜ë³µì„ ìœ„í•œ ë³€ìˆ˜ j, ê·¸ í•œ ê°€ë¡œì¤„ì„ ë‚˜íƒ€ë‚¼ë•Œ ì“¸ k, í•œ ì¤„ì— 3ì¹¸ì”©ì´ë‹ˆê¹Œ këŠ” 3ì”©ëŠ˜ë¦¼
-            if (data[k] != State.EMPTY && data[k] == data[k+1] && data[k] == data[k+2]&& data[k] == data[k+3]) {//ê°€ë¡œì¤„ì˜ ì²« ì¹¸ì´ ë¹„ì—ˆëŠ”ì§€ í™•ì¸í›„,
-            	//ì•ˆ ë¹„ì—ˆìœ¼ë©´ ê·¸ ì¤„ë“¤ì˜ ê°’ì´ ì²«ë²ˆì§¸ ì¹¸í•˜ê³  ê°™ì€ì§€ í™•ì¸
-                row = j;//ê·¸ í•œì¤„ì´ ë‹¤ ì°¨ìžˆë‹¤ë©´, ê·¸ ì¤„ë²ˆí˜¸ë¥¼ ì €ìž¥
+        // check rows °¡·ÎÁÙ È®ÀÎ
+        for (int j = 0, k = 0; j < 4; j++, k += 4) {//¹Ýº¹À» À§ÇÑ º¯¼ö j, ±× ÇÑ °¡·ÎÁÙÀ» ³ªÅ¸³¾¶§ ¾µ k, ÇÑ ÁÙ¿¡ 3Ä­¾¿ÀÌ´Ï±î k´Â 3¾¿´Ã¸²
+            if (data[k] != State.EMPTY && data[k] == data[k+1] && data[k] == data[k+2]&& data[k] == data[k+3]) {//°¡·ÎÁÙÀÇ Ã¹ Ä­ÀÌ ºñ¾ú´ÂÁö È®ÀÎÈÄ,
+            	//¾È ºñ¾úÀ¸¸é ±× ÁÙµéÀÇ °ªÀÌ Ã¹¹øÂ° Ä­ÇÏ°í °°ÀºÁö È®ÀÎ
+                row = j;//±× ÇÑÁÙÀÌ ´Ù Â÷ÀÖ´Ù¸é, ±× ÁÙ¹øÈ£¸¦ ÀúÀå
             }
             if (full && (data[k] == State.EMPTY ||
                          data[k+1] == State.EMPTY ||
                          data[k+2] == State.EMPTY ||
-                         data[k+3] == State.EMPTY)) {//ê·¼ë° ë§Œì•½ ë¹„ì–´ìžˆëŠ”ê±¸ë¡œ ë‹¤ ê°™ì€ê±°ë¼ë©´ ë‹¤ ì°¬ê²Œ ì•„ë‹ˆë‹ˆê¹Œ
-                full = false;//ë‹¤ì°¬ê²Œ ì•„ë‹ˆë¼ê³  ë°”ê¿”ì¤Œ
+                         data[k+3] == State.EMPTY)) {//±Ùµ¥ ¸¸¾à ºñ¾îÀÖ´Â°É·Î ´Ù °°Àº°Å¶ó¸é ´Ù Âù°Ô ¾Æ´Ï´Ï±î
+                full = false;//´ÙÂù°Ô ¾Æ´Ï¶ó°í ¹Ù²ãÁÜ
             }
         }
 
-        // check columns ì„¸ë¡œì¤„ í™•ì¸
-        for (int i = 0; i < 4; i++) {// ì„¸ë¡œì¤„ì„ ë‚˜íƒ€ë‚´ê¸° ìœ„í•œ ë³€ìˆ˜ i 
-            if (data[i] != State.EMPTY && data[i] == data[i+4] && data[i] == data[i+8]&& data[i] == data[i+12]) {//ì„¸ë¡œì¤„ì˜ ì²« ê°’ì´ ë¹„ì–´ìžˆëŠ”ì§€ ë³´ê³ ,
-            	//ì•ˆ ë¹„ì—ˆìœ¼ë©´ ê·¸ ì¤„ë“¤ì˜ ê°’ì´ ì²«ë²ˆì§¸ ì¹¸í•˜ê³  ê°™ì€ì§€ í™•ì¸
-                col = i;//ê·¸ í•œì¤„ì´ ë‹¤ ì°¨ìžˆë‹¤ë©´, ê·¸ ë²ˆí˜¸ë¥¼ ì €ìž¥
+        // check columns ¼¼·ÎÁÙ È®ÀÎ
+        for (int i = 0; i < 4; i++) {// ¼¼·ÎÁÙÀ» ³ªÅ¸³»±â À§ÇÑ º¯¼ö i 
+            if (data[i] != State.EMPTY && data[i] == data[i+4] && data[i] == data[i+8]&& data[i] == data[i+12]) {//¼¼·ÎÁÙÀÇ Ã¹ °ªÀÌ ºñ¾îÀÖ´ÂÁö º¸°í,
+            	//¾È ºñ¾úÀ¸¸é ±× ÁÙµéÀÇ °ªÀÌ Ã¹¹øÂ° Ä­ÇÏ°í °°ÀºÁö È®ÀÎ
+                col = i;//±× ÇÑÁÙÀÌ ´Ù Â÷ÀÖ´Ù¸é, ±× ¹øÈ£¸¦ ÀúÀå
             }
         }
 
-        // check diagonals ëŒ€ê°ì„  í™•ì¸ ì—¬ê¸´ ë°˜ë³µì„ í• ê²Œ ì—†ìŒ. ê²½ìš°ëŠ” 2ê°€ì§€ ë¿ì´ë‹ˆê¹
-        if (data[0] != State.EMPTY && data[0] == data[1+4] && data[0] == data[2+8]&& data[0] == data[3+12]) {//ìš°ì¸¡ í•˜ë‹¨ìœ¼ë¡œ ë‚´ë ¤ê°€ëŠ” ëŒ€ê°ì„ 
-            diag = 0;//ê·¸ëŸ´ë• 0ìœ¼ë¡œ
-        } else  if (data[3] != State.EMPTY && data[3] == data[2+4] && data[3] == data[1+8] && data[3] == data[0+12]) {//ì¢Œì¸¡ ìƒë‹¨ìœ¼ë¡œ ì˜¬ë¼ê°€ëŠ” ëŒ€ê°ì„ 
-            diag = 1;//ê·¸ëŸ´ë• 1ë¡œ
+        // check diagonals ´ë°¢¼± È®ÀÎ ¿©±ä ¹Ýº¹À» ÇÒ°Ô ¾øÀ½. °æ¿ì´Â 2°¡Áö »ÓÀÌ´Ï±ñ
+        if (data[0] != State.EMPTY && data[0] == data[1+4] && data[0] == data[2+8]&& data[0] == data[3+12]) {//¿ìÃø ÇÏ´ÜÀ¸·Î ³»·Á°¡´Â ´ë°¢¼±
+            diag = 0;//±×·²¶© 0À¸·Î
+        } else  if (data[3] != State.EMPTY && data[3] == data[2+4] && data[3] == data[1+8] && data[3] == data[0+12]) {//ÁÂÃø »ó´ÜÀ¸·Î ¿Ã¶ó°¡´Â ´ë°¢¼±
+            diag = 1;//±×·²¶© 1·Î
         }
 
-        if (col != -1 || row != -1 || diag != -1) {//ê·¸ëž˜ì„œ ê°€ë¡œ,ì„¸ë¡œ, ëŒ€ê°ì„ ì„ í™•ì¸í•´Â”fëŠ”ë° ê·¸ì¤‘ í•˜ë‚˜ë¼ë„ í•œì¤„ì´ ì™„ì„±Â‰ç‘›ë»‘
-            setFinished(player, col, row, diag);//ì–´ë–¤ í”Œë ˆì´ì–´ì¸ì§€,ê°€ë¡œ ì„¸ë¡œ ëŒ€ê°ì„  ê°’ë„ ë„˜ê²¨ì£¼ê³ 
-            return true;//ê²Œìž„ì´ ëë‚¬ìœ¼ë‹ˆ true
+        if (col != -1 || row != -1 || diag != -1) {//±×·¡¼­ °¡·Î,¼¼·Î, ´ë°¢¼±À» È®ÀÎÇØ”f´Âµ¥ ±×Áß ÇÏ³ª¶óµµ ÇÑÁÙÀÌ ¿Ï¼º‰çÀ»¶©
+            setFinished(player, col, row, diag);//¾î¶² ÇÃ·¹ÀÌ¾îÀÎÁö,°¡·Î ¼¼·Î ´ë°¢¼± °ªµµ ³Ñ°ÜÁÖ°í
+            return true;//°ÔÀÓÀÌ ³¡³µÀ¸´Ï true
         }
 
         // if we get here, there's no winner but the board is full.
-        if (full) {//ìœ„ì— ê°€ë¡œ ë°˜ë³µë¬¸ì—ì„œ emptyë¡œ ê½‰ì°¬ê²Œ ì•„ë‹ˆë¼ë©´ falseê°€ ë˜ëŠ”ë°, ì—¬ê¸°ì„œ ê±¸ëŸ¬ë‚´ëŠ”ê±´ ë¹„ì–´ìžˆì„ê²½ìš°
-            setFinished(State.EMPTY, -1, -1, -1);//ê·¸ëƒ¥ ëë‚«ë‹¤ê³  ì•Œë ¤ì¤Œ. ìŠ¹ìž ì—†ì´
-            return true;//ê·¸ë¦¬ê³  ëëƒ„
+        if (full) {//À§¿¡ °¡·Î ¹Ýº¹¹®¿¡¼­ empty·Î ²ËÂù°Ô ¾Æ´Ï¶ó¸é false°¡ µÇ´Âµ¥, ¿©±â¼­ °É·¯³»´Â°Ç ºñ¾îÀÖÀ»°æ¿ì
+            setFinished(State.EMPTY, -1, -1, -1);//±×³É ³¡³´´Ù°í ¾Ë·ÁÁÜ. ½ÂÀÚ ¾øÀÌ
+            return true;//±×¸®°í ³¡³¿
         }
         
         
@@ -368,7 +418,7 @@ public class GameActivity extends Activity {
         
         
         //////////
-        //ìŠ¹ìžê°€ ê²°ì •ë˜ì§€ ì•Šì•—ìœ¼ë‹ˆê¹ ì†Œë¦¬ëž‘ íƒ€ì´ë¨¸ ë‹¤ì‹œ ëŒë¦¼
+        //½ÂÀÚ°¡ °áÁ¤µÇÁö ¾Ê¾ÑÀ¸´Ï±ñ ¼Ò¸®¶û Å¸ÀÌ¸Ó ´Ù½Ã µ¹¸²
         timerSound.start();
     	mCountDown.start();
     	/////////
@@ -379,31 +429,31 @@ public class GameActivity extends Activity {
     	
     	
     	
-        return false;//ëª¨ë“  ì¡°ê±´ ë‹¤ ëŒë ·ëŠ”ë°ë„ ê²Œìž„ì´ ì•ˆëë‚˜ë©´ ê± false
+        return false;//¸ðµç Á¶°Ç ´Ù µ¹·Ç´Âµ¥µµ °ÔÀÓÀÌ ¾È³¡³ª¸é °Á false
     }
 
     private void setFinished(State player, int col, int row, int diagonal) {
 
-        mGameView.setCurrentPlayer(State.WIN);//í˜„ìž¬ í”Œë ˆì´ì–´ì˜ ìƒíƒœë¥¼ ì´ê²¼ë‹¤ê³  í•´ì£¼ê³ 
-        mGameView.setWinner(player);//ìŠ¹ìžê°€ ëˆ„êµ¬ì¸ì§€ í•´ì£¼ê³ 
-        mGameView.setEnabled(false);//í„°ì¹˜ ì•ˆë˜ê²Œ ë§‰ê³ 
-        mGameView.setFinished(col, row, diagonal);//ì–´ë–¤ì¤„ì—ì„œ ì´ê²¼ëŠ”ì§€ ë³´ì—¬ì¤Œ
-        setWinState(player);//ê·¸ë¦¬ê³  ì´ê²¼ìœ¼ë‹ˆê¹Œ ìƒíƒœë³€ê²½
+        mGameView.setCurrentPlayer(State.WIN);//ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ¸¦ ÀÌ°å´Ù°í ÇØÁÖ°í
+        mGameView.setWinner(player);//½ÂÀÚ°¡ ´©±¸ÀÎÁö ÇØÁÖ°í
+        mGameView.setEnabled(false);//ÅÍÄ¡ ¾ÈµÇ°Ô ¸·°í
+        mGameView.setFinished(col, row, diagonal);//¾î¶²ÁÙ¿¡¼­ ÀÌ°å´ÂÁö º¸¿©ÁÜ
+        setWinState(player);//±×¸®°í ÀÌ°åÀ¸´Ï±î »óÅÂº¯°æ
     }
 
     private void setWinState(State player) {
-        mButtonNext.setEnabled(true);//ë²„íŠ¼ëˆ„ë¥´ê¸°ë¥¼ í™œì„±í™”
-        mButtonNext.setText("Back");//ê·¼ë° ê·¸ê±´ ë’¤ë¡œê°€ê¸° ë²„íŠ¼ì´ì•¼
+        mButtonNext.setEnabled(true);//¹öÆ°´©¸£±â¸¦ È°¼ºÈ­
+        mButtonNext.setText("Back");//±Ùµ¥ ±×°Ç µÚ·Î°¡±â ¹öÆ°ÀÌ¾ß
 
-        String text;//ì´ê¸´ì‚¬ëžŒì— ë”°ë¼ ë‹¬ë¼ì§€ëŠ” ë¬¸ìžì—´
+        String text;//ÀÌ±ä»ç¶÷¿¡ µû¶ó ´Þ¶óÁö´Â ¹®ÀÚ¿­
 
-        if (player == State.EMPTY) {//ì´ê¸´ì‚¬ëžŒì´ ì—†ë‹¤ë©´
-            text = getString(R.string.tie);//ì´ê¸´ì‚¬ëžŒì´ ì—†ë‹¤ëŠ” ìŠ¤íŠ¸ë§
+        if (player == State.EMPTY) {//ÀÌ±ä»ç¶÷ÀÌ ¾ø´Ù¸é
+            text = getString(R.string.tie);//ÀÌ±ä»ç¶÷ÀÌ ¾ø´Ù´Â ½ºÆ®¸µ
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("Player",3);
             setResult(1,i);
-        } else if (player == State.PLAYER1) {//ì´ê¸´ë†ˆì´ í”Œë ˆì´ì–´1 ì¼ë•
-            text = getString(R.string.player1_win);//í”Œë ˆì´ì–´ 1ì´ ì´ê²»ë‹¤ëŠ” ìŠ¤íŠ¸ë§
+        } else if (player == State.PLAYER1) {//ÀÌ±ä³ðÀÌ ÇÃ·¹ÀÌ¾î1 ÀÏ¶©
+            text = getString(R.string.player1_win);//ÇÃ·¹ÀÌ¾î 1ÀÌ ÀÌ°ä´Ù´Â ½ºÆ®¸µ
             
             
             
@@ -413,7 +463,7 @@ public class GameActivity extends Activity {
             
             //////////
             sp.play(winSound, 1, 1, 0, 0, 1);
-            timerSound.stop(); //ì•„ì˜ˆ íƒ€ì´ë¨¸ì†Œë¦¬êº¼ë²„ë¦¼, startí•´ë„ ì‹¤í–‰ì•ˆë¨, ë‹¤ì‹œ onCreateë˜ì–´ì•¼ ì‹¤í–‰ë¨.
+            timerSound.stop(); //¾Æ¿¹ Å¸ÀÌ¸Ó¼Ò¸®²¨¹ö¸², startÇØµµ ½ÇÇà¾ÈµÊ, ´Ù½Ã onCreateµÇ¾î¾ß ½ÇÇàµÊ.
             mCountDown.cancel();
             time.setText("");
             ////////////
@@ -427,8 +477,8 @@ public class GameActivity extends Activity {
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("Player",1);
             setResult(1,i);
-        } else {//ì´ê¸´ì‚¬ëžŒì´ ì—†ì§€ë„, 1ë„ ì•„ë‹ˆë¼ë©´
-            text = getString(R.string.player2_win);// í”Œë ˆì´ì–´ 2ê°€ ì´ê²»ê²Ÿì§€?
+        } else {//ÀÌ±ä»ç¶÷ÀÌ ¾øÁöµµ, 1µµ ¾Æ´Ï¶ó¸é
+            text = getString(R.string.player2_win);// ÇÃ·¹ÀÌ¾î 2°¡ ÀÌ°ä°ÙÁö?
             
             
             
@@ -455,6 +505,32 @@ public class GameActivity extends Activity {
             i.putExtra("Player",2);
             setResult(1,i);
         }
-        mInfoView.setText(text);//ê·¸ë¦¬ê³  ê·¸ê±¸ í™”ë©´ì— ë„ì›Œì¤Œ
+        mInfoView.setText(text);//±×¸®°í ±×°É È­¸é¿¡ ¶ç¿öÁÜ
     }
+    
+    
+    
+    
+    ////////
+    public void onDestroy() 
+    {
+        super.onDestroy();
+        //¾²·¹µå³ª »ç¿îµå´Â °­Á¦Á¾·á½Ã ¹®Á¦ ¾È»ý±â·Á¸é Á¤Áö(¸±¸®Áî-À½¾Ç or cancel-½º·¹µå) ÈÄ¿¡ null°ª ³Ö¾îÁÖ¾î¾ß ÇÑ´Ù.   
+        if (timerSound != null) 
+        {
+        	timerSound.release();
+        	timerSound = null;
+
+        }
+        if( mCountDown != null)
+        {
+        	mCountDown.cancel();
+        	mCountDown = null;
+        }
+    }
+    /////////
+    
+    
+    
+    
 }
