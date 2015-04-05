@@ -54,9 +54,9 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main); 
         
-        
+        startActivity(new Intent(this, LoadingActivity.class));
         
         
         
@@ -72,9 +72,6 @@ public class MainActivity extends Activity {
         
         
         
-        
-        
-        startActivity(new Intent(this, LoadingActivity.class));
         
         //컴퓨터와 게임
         findViewById(R.id.play_comp).setOnClickListener(
@@ -219,4 +216,37 @@ public class MainActivity extends Activity {
     	}
     	
     }
+    
+    
+    
+    
+    
+    ///////
+    public void onPause() 
+    {
+        super.onPause();
+        
+        if (bgm != null) 
+        {
+          bgm.pause();
+
+        }
+    }
+    public void onDestroy() 
+    {
+        super.onDestroy();
+        
+        if (bgm != null) 
+        {
+          bgm.release();
+          bgm = null;
+
+        }
+    }
+    /////////
+    
+    
+    
+    
+    
 }

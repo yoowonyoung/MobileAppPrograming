@@ -29,7 +29,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,6 +67,7 @@ public class GameActivity extends Activity {
     private MediaPlayer timerSound;//타이머소리를 mediaplayer로 처리, soundpool은 oncreate에서 바로 플레이 할 수 없고, play했을때 안되는 부분도 많다.무슨 핸들러나 스래드 쓰면 된다는데 잘 모르겄음
     private CountDownTimer mCountDown ; 
     private TextView time;//타이머 남은 시간 표시
+    private int countDownPause; //CountDownTimer가 pause상태(wait)상태이면 1, 아니면 0  
     //////
     
     
@@ -149,8 +149,22 @@ public class GameActivity extends Activity {
 			}
 			public void onFinish() {
 				//턴넘기기
-				// TODO Auto-generated method stub
-				time.setText("");
+			
+		
+				
+				
+				
+				
+				////////////턴 넘어감을 더 정확히 인식시키기 위해 사용
+				Toast toast = Toast.makeText(GameActivity.this, "your turn is time over!!!!", Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				//////////
+				
+				
+				
+				
+				
 				finishTurn();
 			}
 		}.start();
@@ -172,11 +186,31 @@ public class GameActivity extends Activity {
     protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
         super.onResume(); 
                 
+        
+        
+        
+        //////////
+        timerSound.start();
+        mCountDown.start();
+        /*
+        if(countDownPause == 1) //이렇게 안해주면 에러 나드라
+        {
+        	mCountDown.notify();
+        	countDownPause = 0;
+        }
+        */
+        //////////
+        
+        
+        
+        
+        
+        
         State player = mGameView.getCurrentPlayer();//뷰 상에 현재 나타나는 플레이어가 누군지
         if (player == State.UNKNOWN) {//근데 만약 플레이어가 언논일때
             player = State.fromInt(getIntent().getIntExtra(EXTRA_START_PLAYER, 1));//1로 바꺼줌
             if (!checkGameFinished(player)) {//게임이 끝났는지 체크해서 안끝났으면
-            	selectTurn(player);//현재 턴을 유지.
+            	selectTurn(player);//그 플레이어의 턴으로 해쥼
             }
         }
       
@@ -227,29 +261,26 @@ public class GameActivity extends Activity {
         	
         	
         	
+
         	
-        	
-        	
-        	
-        	
+        	/*finishTurn 메소드로 옮김
         	////////////
         	timerSound.pause();//여기서 stop해버리면 음악로딩파일도 아예 소멸되 다시 플레이하려면 다시 로딩해야해서 pause로 처리
 			mCountDown.cancel();
 			time.setText("");
-
+			
+			
         	try {
-				Thread.sleep(300); //소리 pause 시킨 것을 인식시키기 위해 사용.
+				Thread.sleep(200); //소리 pause 시킨 것을 인식시키기 위해 사용.
 			
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
         	//////////////
-        	
-        	
-        	
-        	
-        	
+        	*/
+     
         	
         	
         	
@@ -311,7 +342,39 @@ public class GameActivity extends Activity {
     		
     }
 
-    private void finishTurn() {//턴을 끝내는 방법ㄴ
+    private void finishTurn() {//턴을 끝내는 방법
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	////////////
+    	//원래는 버튼 리스너 부분에 있던 것인데, 타임초과로 턴을 넘기든 버튼으로 턴을 넘기든 똑같은 처리가 필요(타이머소리 일시정지)해서 여기로 옮김.
+    	timerSound.pause();//여기서 stop해버리면 음악로딩파일도 아예 소멸돼(알아 보니, release가 소멸시키는 것이고, stop은 무슨 준비시간을 줘야 다시실행할수 있게한다고 함
+    	                   //어쨌든 바로 다시 플레이해야해서 pause로 처리
+		mCountDown.cancel();
+		time.setText("");
+
+    	try {
+			Thread.sleep(300); //소리 pause 시킨 것을 인식 + 턴넘김 인식시키기 위해 사용.
+		
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    	//////////////
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         State player = mGameView.getCurrentPlayer();//현재의 플레이어를 받아서
         if (!checkGameFinished(player)) {//그 플레이어가 게임을 끝냈는지 확인한후
             player = selectTurn(getOtherPlayer(player));//다른 플레이어로의 턴을 넘겨줌
@@ -487,4 +550,59 @@ public class GameActivity extends Activity {
         }
         mInfoView.setText(text);//그리고 그걸 화면에 띄워줌
     }
+    
+    
+    
+    
+    ////////
+    public void onPause() 
+    {
+        super.onPause();
+        //쓰레드나 사운드는 강제종료시 문제 안생기려면 정지(릴리즈-음악 or cancel-스레드) 후에 null값 넣어주어야 한다.   
+        if (timerSound != null) 
+        {
+        	timerSound.pause();
+
+        }
+        
+        if(mCountDown != null) 
+        {
+        	mCountDown.cancel();
+        }
+        
+        /* 원래는 wait써서 완벽하게 했던 것 유지해야 되는데.. 에러남. 그래서 그냥 타이머 종료하고 재시작하는 식으로 만듦.
+        if(mCountDown != null)
+        {
+			try {
+				mCountDown.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			countDownPause = 1;
+        }
+        */
+    }
+    public void onDestroy() 
+    {
+        super.onDestroy();
+        
+        //쓰레드나 사운드는 강제종료시 문제 안생기려면 정지(릴리즈-음악 or cancel-스레드) 후에 null값 넣어주어야 한다.   
+        if (timerSound != null) 
+        {
+        	timerSound.release();
+        	timerSound = null;
+
+        }
+        if( mCountDown != null )
+        {
+        	mCountDown.cancel();
+        	mCountDown = null;
+        }
+    }
+    /////////
+    
+    
+    
+    
 }
