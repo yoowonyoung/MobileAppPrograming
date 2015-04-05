@@ -16,6 +16,7 @@
 
 package com.example.android.tictactoe;
 
+import java.io.Console;
 import java.util.Random;
 
 import android.app.Activity;
@@ -28,6 +29,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +55,8 @@ public class GameActivity extends Activity {
     private GameView mGameView;//화면 나타내는 gameView
     private TextView mInfoView;//누가 이겼는지 나타내는 텍스트 뷰
     private Button mButtonNext;
+    
+    private String playType;
     
       
     
@@ -155,8 +159,7 @@ public class GameActivity extends Activity {
 		/////////
 		
 		
-		
-		
+		playType = getIntent().getStringExtra("playType");
 		
 		
 		
@@ -168,17 +171,18 @@ public class GameActivity extends Activity {
     @Override
     protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
         super.onResume(); 
-        
+                
         State player = mGameView.getCurrentPlayer();//뷰 상에 현재 나타나는 플레이어가 누군지
         if (player == State.UNKNOWN) {//근데 만약 플레이어가 언논일때
             player = State.fromInt(getIntent().getIntExtra(EXTRA_START_PLAYER, 1));//1로 바꺼줌
             if (!checkGameFinished(player)) {//게임이 끝났는지 체크해서 안끝났으면
-            	selectTurn(player);//그 플레이어의 턴으로 해쥼
+            	selectTurn(player);//현재 턴을 유지.
             }
         }
-        /*if (player == State.PLAYER2) {//플레이어2(현재는 컴퓨터)의 턴일경우
+      
+        if (player == State.PLAYER3) {//플레이어3(현재는 컴퓨터)의 턴일경우
             mHandler.sendEmptyMessageDelayed(MSG_COMPUTER_TURN, COMPUTER_DELAY_MS);//0.5초 딜레이 해주면서 컴퓨터가 한칸놓는 메써드
-        }*/
+        }
         if (player == State.WIN) {//근데 플레이어 상태가 이긴상태면
             setWinState(mGameView.getWinner());//누가 이겼는지 받아와서 이겼다고 해줌
         }
@@ -196,6 +200,9 @@ public class GameActivity extends Activity {
 
         } else if (player == State.PLAYER2) {//플레이어2(컴퓨터)의 차례라면
             mInfoView.setText(R.string.player2_turn);//플레이어2의 차례라고 해주고
+            mGameView.setEnabled(true);//게임판 터치를 막아
+        } else if(player == State.PLAYER3) {
+        	mInfoView.setText(R.string.player3_turn);//플레이어2의 차례라고 해주고
             mGameView.setEnabled(true);//게임판 터치를 막아
         }
 
@@ -296,19 +303,23 @@ public class GameActivity extends Activity {
     }
 
     private State getOtherPlayer(State player) {//플레이어 변경
-        return player == State.PLAYER1 ? State.PLAYER2 : State.PLAYER1;//플레이어1이였으면 2로, 2였으면 1로
+    	if(playType.equals("pc")) {
+    		return player == State.PLAYER1 ? State.PLAYER3: State.PLAYER1;
+    	}
+    	else
+    		return player == State.PLAYER1 ? State.PLAYER2 : State.PLAYER1;//플레이어1이였으면 2로, 2였으면 1로
+    		
     }
 
     private void finishTurn() {//턴을 끝내는 방법ㄴ
         State player = mGameView.getCurrentPlayer();//현재의 플레이어를 받아서
         if (!checkGameFinished(player)) {//그 플레이어가 게임을 끝냈는지 확인한후
             player = selectTurn(getOtherPlayer(player));//다른 플레이어로의 턴을 넘겨줌
-            /*
-            if (player == State.PLAYER2) {//근데 만약 컴퓨터 턴일때에는
+            if (player == State.PLAYER3) {//근데 만약 컴퓨터 턴일때에는
                 mHandler.sendEmptyMessageDelayed(MSG_COMPUTER_TURN, COMPUTER_DELAY_MS);
                 //응답 시작시간에 시작하여서  응답 지연 시간까지 대기 한 후 메세지 발송
                 //그냥 단순히 카운터 해주는 부분이라고 생각하면 된다 0.5초 카운팅
-            }*/
+            }
         }
     }
 
@@ -378,7 +389,6 @@ public class GameActivity extends Activity {
     	
     	
     	
-    	
         return false;//모든 조건 다 돌렷는데도 게임이 안끝나면 걍 false
     }
 
@@ -397,10 +407,10 @@ public class GameActivity extends Activity {
 
         String text;//이긴사람에 따라 달라지는 문자열
 
-        if (player == State.EMPTY) {//이긴사람이 없다면
+        if (player == State.EMPTY) {//이긴사람이 없다면(무승부)
             text = getString(R.string.tie);//이긴사람이 없다는 스트링
             Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("Player",3);
+            i.putExtra("Player",0);
             setResult(1,i);
         } else if (player == State.PLAYER1) {//이긴놈이 플레이어1 일땐
             text = getString(R.string.player1_win);//플레이어 1이 이겻다는 스트링
@@ -423,12 +433,34 @@ public class GameActivity extends Activity {
             
             
             
+            if(playType.equals("pc")) { // pc와 했을 때
+            	Intent i = new Intent(this, MainActivity.class);
+                i.putExtra("Player",-3);
+                setResult(1,i);
+            }
+            else {//사람과 했을 때 
+            	Intent i = new Intent(this, MainActivity.class);
+                i.putExtra("Player",-2);
+                setResult(1,i);
+            }
+        } else {//이긴사람이 없지도, 1도 아니라면 (2아니면 pc)
+        	
+        	if(playType.equals("pc")) { // pc와 했을 때
+        		text = getString(R.string.player3_win);// pc가 이겻겟지?
+        		
+            	Intent i = new Intent(this, MainActivity.class);
+                i.putExtra("Player",3);
+                setResult(1,i);
+            }
+            else {//사람과 했을 때 
+            	text = getString(R.string.player2_win);// 플레이어 2가 이겻겟지?
+            	
+            	Intent i = new Intent(this, MainActivity.class);
+                i.putExtra("Player",2);
+                setResult(1,i);
+            }
+        	
             
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("Player",1);
-            setResult(1,i);
-        } else {//이긴사람이 없지도, 1도 아니라면
-            text = getString(R.string.player2_win);// 플레이어 2가 이겻겟지?
             
             
             
@@ -451,9 +483,7 @@ public class GameActivity extends Activity {
             
             
             
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("Player",2);
-            setResult(1,i);
+
         }
         mInfoView.setText(text);//그리고 그걸 화면에 띄워줌
     }

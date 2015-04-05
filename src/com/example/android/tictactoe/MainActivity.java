@@ -30,6 +30,8 @@ public class MainActivity extends Activity {
     /** Called when the activity is first created. */
 	private int player1win = 0;
 	private int player2win = 0;
+	private int player3win = 0;
+	private String playType;
 	
 	
 	
@@ -73,10 +75,39 @@ public class MainActivity extends Activity {
         
         
         startActivity(new Intent(this, LoadingActivity.class));
-        findViewById(R.id.start_player).setOnClickListener(
+        
+        //컴퓨터와 게임
+        findViewById(R.id.play_comp).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
-                startGame(true);//사람이 먼저 시작하는 start game로 시작
+                startGame(3);//컴퓨터가 먼저 시작하는 start game로 시작
+            
+                
+                
+                
+                
+                
+                
+                
+                ///////
+                bgm.pause();
+                ///////
+                
+                
+                
+                
+                
+                
+                
+                
+            }
+        });
+        
+        
+        findViewById(R.id.start_player1).setOnClickListener(
+                new OnClickListener() {
+            public void onClick(View v) {
+                startGame(1);//사람이 먼저 시작하는 start game로 시작
                 
                 
                 
@@ -98,10 +129,12 @@ public class MainActivity extends Activity {
             }
         });
 
-        findViewById(R.id.start_comp).setOnClickListener(
+        
+        
+        findViewById(R.id.start_player2).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
-                startGame(false);//컴퓨터가 먼저 시작하는 start game로 시작
+                startGame(2);//컴퓨터가 먼저 시작하는 start game로 시작
             
                 
                 
@@ -125,10 +158,16 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void startGame(boolean startWithHuman) {
+    private void startGame(int startWithHuman) {
         Intent i = new Intent(this, GameActivity.class);
-        i.putExtra(GameActivity.EXTRA_START_PLAYER,
-                startWithHuman ? State.PLAYER1.getValue() : State.PLAYER2.getValue());
+        i.putExtra(GameActivity.EXTRA_START_PLAYER, startWithHuman);
+        if(startWithHuman == 3) {
+        	playType = "pc";
+        	i.putExtra("playType", "pc");
+        }else {
+        	playType = "human";
+        	i.putExtra("playType", "human");
+        }
         //선택한 버튼에 따라 t/f값이 넘어 오는데, 이로 구분을 해서 사람먼저,컴퓨터 먼저 구분해서 시작
         //사람먼저 일 경우 1, 컴퓨터 먼저 일경우 2
         startActivityForResult(i,1);//1번으로 시작
@@ -152,8 +191,13 @@ public class MainActivity extends Activity {
         
         
         
-        if(player1win != 0 || player2win != 0){
-        	Toast.makeText(MainActivity.this, "player1 score " + player1win + " win, "+ player2win + " lose \n" +  "player2 score " + player2win + " win, "+ player1win + " lose ", Toast.LENGTH_LONG).show();
+        if(player1win != 0 || player2win != 0 || player3win != 0){
+        	if(playType.equals("pc")) {
+        		Toast.makeText(MainActivity.this, "player1 score " + player1win + " win, "+ player3win + " lose \n" +  "computer score " + player3win + " win, "+ player1win + " lose ", Toast.LENGTH_LONG).show();
+        	}
+        	else {
+        		Toast.makeText(MainActivity.this, "player1 score " + player1win + " win, "+ player2win + " lose \n" +  "player2 score " + player2win + " win, "+ player1win + " lose ", Toast.LENGTH_LONG).show();
+        	}
         }
     }
     
@@ -163,10 +207,14 @@ public class MainActivity extends Activity {
     	super.onActivityResult(requestCode, resultCode, data);
     	if(data != null ){
     		int score = data.getExtras().getInt("Player");
-        	if(score == 1){
+        	if(score == -2){
         		player1win += 1;
         	}else if (score == 2){
         		player2win += 1;
+        	}else if (score == -3){
+        		player1win += 1;
+        	}else if (score == 3){
+        		player3win += 1;
         	}
     	}
     	

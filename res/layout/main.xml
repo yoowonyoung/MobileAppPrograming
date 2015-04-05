@@ -28,14 +28,22 @@
         android:layout_weight="0.42"
         android:src="@drawable/tictactoe" />
 
+    
     <Button
-        android:id="@+id/start_player"
+        android:id="@+id/play_comp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_computer" />
+    
+    
+    <Button
+        android:id="@+id/start_player1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_player1" />
 
     <Button
-        android:id="@+id/start_comp"
+        android:id="@+id/start_player2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"

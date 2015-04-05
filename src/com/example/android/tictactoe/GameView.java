@@ -49,7 +49,8 @@ public class GameView extends View {
         WIN(-2),
         EMPTY(0),
         PLAYER1(1),
-        PLAYER2(2);
+        PLAYER2(2),
+        PLAYER3(3);
 
         private int mValue;
 
@@ -245,6 +246,10 @@ public class GameView extends View {
                         canvas.drawBitmap(mBmpPlayer2, mSrcRect, mDstRect, mBmpPaint);
                     }
                     break;
+                case PLAYER3:
+                	if(mBmpPlayer2 != null) {
+                        canvas.drawBitmap(mBmpPlayer2, mSrcRect, mDstRect, mBmpPaint);
+                    }
                 }
             }
         }
