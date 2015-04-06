@@ -89,6 +89,8 @@ public class GameView extends View {
     private Paint mBmpPaint;
     private Bitmap mBmpPlayer1;
     private Bitmap mBmpPlayer2;
+    private Bitmap mBmpRecentP1;
+    private Bitmap mBmpRecentP2;
     private Drawable mDrawableBg;
 
     private ICellListener mCellListener;
@@ -124,7 +126,9 @@ public class GameView extends View {
 
         mBmpPlayer1 = getResBitmap(R.drawable.lib_cross);//플레이어 1은 X로
         mBmpPlayer2 = getResBitmap(R.drawable.lib_circle);//플레이어 2는 O로 
-
+        mBmpRecentP1 = getResBitmap(R.drawable.lib_cross_recent);
+        mBmpRecentP2 = getResBitmap(R.drawable.lib_circle_recent);
+        
         if (mBmpPlayer1 != null) {
             mSrcRect.set(0, 0, mBmpPlayer1.getWidth() -1, mBmpPlayer1.getHeight() - 1);
             //이미지 불러오는거 성공했으면 값이 있겟지? 그럼 SrcRect를 그것보다 쬐끔 작게 만들아줌
