@@ -315,18 +315,33 @@ public class GameActivity extends Activity {
 
                 // Pick a non-used cell at random. That's about all the AI you need for this game.
                 State[] data = mGameView.getData();//게임판을 받아와서
-                int used = 0;
-                while (used != 0x1F) {//이 0x1f라는게 구분문자 라는거같애, 
-                    int index = mRnd.nextInt(16);//랜덤으로 0~9까지 만들어서
+                while(true){
+                    int index = mRnd.nextInt(16);//랜덤으로 0~15까지 만들어서
+                    if(data[index] == State.EMPTY){
+                        mGameView.setCell(index, mGameView.getCurrentPlayer());//플레이어 2가 놧다고 하고
+                        break;
+                    }
+                }
+                //int used = 0;
+                //그냥 for문써서 하나씩 비교해서 Empty면 넣는게 더욱 깔끔함
+                /*for(State state : data)
+                 * {
+                 * 		if(state == State.Empty)
+                 * 		{
+                 * 			칸놓기
+                 * 		}
+                 * }
+                 * 
+                 */
+                /*while (used != 0x1F) {//이 0x1f라는게 구분문자 라는거같애, 0x1f = 0000 0000 0001 1111임.
                     if (((used >> index) & 1) == 0) {//used의 2진수 표현을 오른쪽으로 index 비트만큼 옮긴게, 1이 아니라면..야 이거 말좀 어렵다
                         used |= 1 << index;//졸어렵;; 그렇게 해서 나온 used과 1을 비트단위 논리합(OR)를 해주고 왼쪽으로 index만큼 왼쪽으로 비트이동
                         if (data[index] == State.EMPTY) {//근데 결국 used는 반복을 위한거일 뿐인데 이렇게 복잡하게 해야하나?
                         	//아무튼 그래서 게임판의 index번쨰 칸이 비어있으면
-                            mGameView.setCell(index, mGameView.getCurrentPlayer());//플레이어 2가 놧다고 하고
-                            break;//반복문 종료
+                            //반복문 종료
                         }
                     }
-                }
+                }*/
                finishTurn();//그리고 플레이어2의 턴을 끝내
                 return true;//끝냈으니까 true
             }
