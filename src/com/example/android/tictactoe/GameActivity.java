@@ -16,10 +16,10 @@
 
 package com.example.android.tictactoe;
 
-import java.io.Console;
 import java.util.Random;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -35,6 +35,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
 
 import com.example.android.tictactoe.GameView.ICellListener;
 import com.example.android.tictactoe.GameView.State;
@@ -477,7 +478,8 @@ public class GameActivity extends Activity {
             setResult(1,i);
         } else if (player == State.PLAYER1) {//이긴놈이 플레이어1 일땐
             text = getString(R.string.player1_win);//플레이어 1이 이겻다는 스트링
-            
+            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibe.vibrate(200);
             
             
             
@@ -517,7 +519,8 @@ public class GameActivity extends Activity {
             }
             else {//사람과 했을 때 
             	text = getString(R.string.player2_win);// 플레이어 2가 이겻겟지?
-            	
+            	Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            	vibe.vibrate(500);
             	Intent i = new Intent(this, MainActivity.class);
                 i.putExtra("Player",2);
                 setResult(1,i);
