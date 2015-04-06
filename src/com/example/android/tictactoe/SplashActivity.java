@@ -7,7 +7,7 @@ import android.os.Message;
 
 
 
-public class LoadingActivity extends Activity {
+public class SplashActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

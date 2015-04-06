@@ -26,7 +26,7 @@
     <string name="tie">This is a tie! No one wins!</string>
     <string name="player2_turn">Player 2\'s turn </string>
     <string name="player1_turn">Player 1\'s turn </string>
-    <string name="player3_turn">Player 3\'s turn </string>
+    <string name="player3_turn">Computer\'s turn </string>
     <string name="welcome"><b>Welcome to the Tic-Tac-Toe Sample!</b></string>
     <string name="explain1">This sample code demonstrates how to split an application in multiple projects by using the \'project library\' available in the Froyo SDK Tools.</string>
     <string name="explain2">This activity is defined in one project. The second activity, launched by one of the buttons below, is located in another project which is a \"library\" to the main one and merged in the same APK.</string>

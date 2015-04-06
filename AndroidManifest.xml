@@ -41,7 +41,7 @@
         -->
         <activity android:name=".GameActivity" />
         <activity
-            android:name=".LoadingActivity"
+            android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_loading"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
