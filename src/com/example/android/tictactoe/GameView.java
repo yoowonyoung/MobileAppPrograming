@@ -17,7 +17,7 @@
 package com.example.android.tictactoe;
 
 import java.util.Random;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -116,13 +116,13 @@ public class GameView extends View {
         abstract void onCellSelected();
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
 	public GameView(Context context, AttributeSet attrs) {//생성자에서 context랑 attribute 받는데 쓰진 않안
         super(context, attrs);
         requestFocus();
 
         mDrawableBg = getResources().getDrawable(R.drawable.lib_bg);//백드라운드 이미지 설정
-        setBackgroundDrawable(mDrawableBg);//이 메소드 쓰지 말라는데 대안 찾아봐야겟다
+        setBackground(mDrawableBg);//이 메소드 쓰지 말라는데 대안 찾아봐야겟다
 
         mBmpPlayer1 = getResBitmap(R.drawable.lib_cross);//플레이어 1은 X로
         mBmpPlayer2 = getResBitmap(R.drawable.lib_circle);//플레이어 2는 O로 
