@@ -30,7 +30,10 @@ public class MainActivity extends Activity {
     /** Called when the activity is first created. */
 	private int player1win = 0;
 	private int player2win = 0;
-	private int player3win = 0;
+	private int player3win = 0; //ÄÄÇ»ÅÍ
+	private int player1lose = 0;
+	private int player2lose = 0;
+	private int player3lose = 0;
 	private String playType;
 	
 	
@@ -189,13 +192,14 @@ public class MainActivity extends Activity {
         
         
         if(player1win != 0 || player2win != 0 || player3win != 0){
-        	if(playType.equals("pc")) {
-        		Toast.makeText(MainActivity.this, "player1 score " + player1win + " win, "+ player3win + " lose \n" +  "computer score " + player3win + " win, "+ player1win + " lose ", Toast.LENGTH_LONG).show();
-        	}
-        	else {
-        		Toast.makeText(MainActivity.this, "player1 score " + player1win + " win, "+ player2win + " lose \n" +  "player2 score " + player2win + " win, "+ player1win + " lose ", Toast.LENGTH_LONG).show();
-        	}
+        
+        		Toast.makeText(MainActivity.this, 
+        				   "player1 score " + player1win + "Win,  " + player1lose + "Lose \n" 
+        	            +  "player2 score " + player2win + "Win,  " + player2lose + "Lose \n"
+        				+  "computer score " + player3win + "Win,  "+ player3lose + "Lose", Toast.LENGTH_LONG).show();
         }
+        	
+        
     }
     
     @Override
@@ -206,12 +210,16 @@ public class MainActivity extends Activity {
     		int score = data.getExtras().getInt("Player");
         	if(score == -2){
         		player1win += 1;
+        		player2lose += 1;
         	}else if (score == 2){
         		player2win += 1;
+        		player1lose += 1;
         	}else if (score == -3){
         		player1win += 1;
+        		player3lose += 1;
         	}else if (score == 3){
         		player3win += 1;
+        		player1lose += 1;
         	}
     	}
     	
