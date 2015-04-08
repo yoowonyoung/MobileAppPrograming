@@ -27,6 +27,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.view.Gravity;
@@ -68,12 +69,85 @@ public class GameActivity extends Activity {
     private MediaPlayer timerSound;//타이머소리를 mediaplayer로 처리, soundpool은 oncreate에서 바로 플레이 할 수 없고, play했을때 안되는 부분도 많다.무슨 핸들러나 스래드 쓰면 된다는데 잘 모르겄음
     private CountDownTimer mCountDown ; 
     private TextView time;//타이머 남은 시간 표시
-    //private int countDownPause; //CountDownTimer가 pause상태(wait)상태이면 1, 아니면 0  
-    //////
+    private long remainTime;
+    private boolean pauseState;
+    ////////
     
     
     
     
+    public void timerStart()
+    {
+    	if(mCountDown != null)
+    	{
+    		mCountDown.cancel(); //생성하기 전에 미리 정지, 초기화시켜둔다.
+    		mCountDown = null;
+    	}
+    	
+    	if(pauseState == true)
+    	{
+    			pauseState = false;//퍼지되고 풀렸을 때 한번만 수행되게끔 함 
+    		
+    			mCountDown = new CountDownTimer(remainTime, 1000) { //11초동안 1초간격으로 줄어들면서 보여준다. 근데 실제 실행해보면 10초부터 시작.
+			
+        	
+    			public void onTick(long millisUntilFinished) {
+				
+    				time.setText("remain time: " + millisUntilFinished / 1000 + "sec");
+				
+    			}
+    			public void onFinish() {
+    				//턴넘기기
+			
+				
+    				////////////턴 넘어감을 더 정확히 인식시키기 위해 사용
+    				Toast toast = Toast.makeText(GameActivity.this, "your turn is time over!!!!", Toast.LENGTH_SHORT);
+    				toast.setGravity(Gravity.CENTER, 0, 0);
+    				toast.show();
+    				//////////
+				
+				
+				
+				
+				
+    				finishTurn();
+    			}
+    			}.start();
+    	}
+    	else //pasueState가 아니면
+    	{
+    			mCountDown = new CountDownTimer(11000, 1000) { //11초동안 1초간격으로 줄어들면서 보여준다. 근데 실제 실행해보면 10초부터 시작.
+    			
+            	
+    			public void onTick(long millisUntilFinished) {
+    				
+    				time.setText("remain time: " + millisUntilFinished / 1000 + "sec");
+    				
+    				remainTime = millisUntilFinished;
+    				
+    			}
+    			public void onFinish() {
+    				//턴넘기기
+    					
+    				
+    				////////////턴 넘어감을 더 정확히 인식시키기 위해 사용
+    				Toast toast = Toast.makeText(GameActivity.this, "your turn is time over!!!!", Toast.LENGTH_SHORT);
+    				toast.setGravity(Gravity.CENTER, 0, 0);
+    				toast.show();
+    				//////////
+    				
+    				
+    				
+    				
+    				
+    				finishTurn();
+    			}
+        		}.start();
+        		
+    	}
+	
+		
+    }
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle bundle) {
@@ -140,37 +214,11 @@ public class GameActivity extends Activity {
         winSound = sp.load(this, R.raw.winsound,1); 
         timerSound = MediaPlayer.create(this, R.raw.timersound1);
         timerSound.setLooping(true);
+        pauseState = false;
         
-        mCountDown = new CountDownTimer(11000,1000) { //11초동안 1초간격으로 줄어들면서 보여준다. 근데 실제 실행해보면 10초부터 시작.
-			
-        	
-			public void onTick(long millisUntilFinished) {
-				
-				time.setText("remain time: " + millisUntilFinished / 1000 + "sec");
-			}
-			public void onFinish() {
-				//턴넘기기
-			
-		
-				
-				
-				
-				
-				////////////턴 넘어감을 더 정확히 인식시키기 위해 사용
-				Toast toast = Toast.makeText(GameActivity.this, "your turn is time over!!!!", Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.CENTER, 0, 0);
-				toast.show();
-				//////////
-				
-				
-				
-				
-				
-				finishTurn();
-			}
-		}.start();
-
+        
 		timerSound.start();
+		timerStart();
 		/////////
 		
 		
@@ -189,21 +237,10 @@ public class GameActivity extends Activity {
                 
         
         
-        
-        //////////
+        /////
         timerSound.start();
-        mCountDown.start();
-        /*
-        if(countDownPause == 1) //이렇게 안해주면 에러 나드라
-        {
-        	mCountDown.notify();
-        	countDownPause = 0;
-        }
-        */
-        //////////
-        
-        
-        
+        timerStart();     
+        /////
         
         
         
@@ -259,32 +296,6 @@ public class GameActivity extends Activity {
     private class MyButtonListener implements OnClickListener {//버튼 누르기 리스너
 
         public void onClick(View v) {
-        	
-        	
-        	
-
-        	
-        	/*finishTurn 메소드로 옮김
-        	////////////
-        	timerSound.pause();//여기서 stop해버리면 음악로딩파일도 아예 소멸되 다시 플레이하려면 다시 로딩해야해서 pause로 처리
-			mCountDown.cancel();
-			time.setText("");
-			
-			
-        	try {
-				Thread.sleep(200); //소리 pause 시킨 것을 인식시키기 위해 사용.
-			
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-        	//////////////
-        	*/
-     
-        	
-        	
-        	
         	
         	State player = mGameView.getCurrentPlayer();//현재 플레이어의 상태 받아옴
 
@@ -345,7 +356,7 @@ public class GameActivity extends Activity {
                         }
                     }
                 }*/
-               finishTurn();//그리고 플레이어2의 턴을 끝내
+                finishTurn();//그리고 플레이어2의 턴을 끝내
                 return true;//끝냈으니까 true
             }
             return false;//행여나 못끝내면 false
@@ -366,11 +377,7 @@ public class GameActivity extends Activity {
     	
     	
     	
-    	
-    	
-    	
-    	
-    	
+
     	////////////
     	//원래는 버튼 리스너 부분에 있던 것인데, 타임초과로 턴을 넘기든 버튼으로 턴을 넘기든 똑같은 처리가 필요(타이머소리 일시정지)해서 여기로 옮김.
     	timerSound.pause();//여기서 stop해버리면 음악로딩파일도 아예 소멸돼(알아 보니, release가 소멸시키는 것이고, stop은 무슨 준비시간을 줘야 다시실행할수 있게한다고 함
@@ -463,7 +470,9 @@ public class GameActivity extends Activity {
         //////////
         //승자가 결정되지 않앗으니깐 소리랑 타이머 다시 돌림
         timerSound.start();
-    	mCountDown.start();
+    	timerStart(); //여기서 timerStart()해버리면 위의 oncreate에서 카운트타이머객체가 있는데 또 객체를 만드는 것으로 문제 발생 
+    	             //그런데 pause상태에서 remainTime을 이용해 객체를 만들게 되서  mCountDonw.start()하면 그 만들어논 pause상태 타이머를 다시 쓰게 되니 
+    	             //결국 두 문제를 해결하기 위해 timerStart()메소드 내에 먼저 cancel처리
     	/////////
     	
     	
@@ -509,9 +518,7 @@ public class GameActivity extends Activity {
             timerSound.stop(); //아예 타이머소리꺼버림, start해도 실행안됨, 다시 onCreate되어야 실행됨.
             mCountDown.cancel();
             time.setText("");
-            ////////////
-            
-            
+            ////////////    
             
             
             
@@ -549,10 +556,7 @@ public class GameActivity extends Activity {
             
             
             
-            
-            
-            
-            
+
             
             //////////
             sp.play(winSound, 1, 1, 0, 0, 1);
@@ -561,10 +565,7 @@ public class GameActivity extends Activity {
             time.setText("");
             ///////////
             
-            
-            
-            
-            
+   
             
             
 
@@ -578,8 +579,9 @@ public class GameActivity extends Activity {
     ////////
     public void onPause() 
     {
-        super.onPause();
-        //쓰레드나 사운드는 강제종료시 문제 안생기려면 정지(릴리즈-음악 or cancel-스레드) 후에 null값 넣어주어야 한다.   
+        super.onPause();  
+        
+        pauseState = true;
         if (timerSound != null) 
         {
         	timerSound.pause();
@@ -590,19 +592,7 @@ public class GameActivity extends Activity {
         {
         	mCountDown.cancel();
         }
-        
-        /* 원래는 wait써서 완벽하게 했던 것 유지해야 되는데.. 에러남. 그래서 그냥 타이머 종료하고 재시작하는 식으로 만듦.
-        if(mCountDown != null)
-        {
-			try {
-				mCountDown.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			countDownPause = 1;
-        }
-        */
+       
     }
     public void onDestroy() 
     {
@@ -623,7 +613,6 @@ public class GameActivity extends Activity {
     }
     /////////
     
-    
-    
+
     
 }
