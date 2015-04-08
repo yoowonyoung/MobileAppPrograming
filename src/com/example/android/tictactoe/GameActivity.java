@@ -68,7 +68,7 @@ public class GameActivity extends Activity {
     private MediaPlayer timerSound;//타이머소리를 mediaplayer로 처리, soundpool은 oncreate에서 바로 플레이 할 수 없고, play했을때 안되는 부분도 많다.무슨 핸들러나 스래드 쓰면 된다는데 잘 모르겄음
     private CountDownTimer mCountDown ; 
     private TextView time;//타이머 남은 시간 표시
-    private int countDownPause; //CountDownTimer가 pause상태(wait)상태이면 1, 아니면 0  
+    //private int countDownPause; //CountDownTimer가 pause상태(wait)상태이면 1, 아니면 0  
     //////
     
     
@@ -296,6 +296,7 @@ public class GameActivity extends Activity {
                 if (cell >= 0) {
                     mGameView.stopBlink();//깜빡이는걸 멈추고
                     mGameView.setCell(cell, player);//어떤셀에 누가 선택하였는지를 입력
+                    mGameView.setRecent(cell);
                     finishTurn();//턴 엔드
                 }
             } else if (player == State.PLAYER2) {//플레이어2(사용자)가 누른경우
@@ -303,6 +304,7 @@ public class GameActivity extends Activity {
                 if (cell >= 0) {
                     mGameView.stopBlink();//깜빡이는걸 멈추고
                     mGameView.setCell(cell, player);//어떤셀에 누가 선택하였는지를 입력
+                    mGameView.setRecent(cell);
                     finishTurn();//턴 엔드
                 }
             } 	
@@ -319,6 +321,7 @@ public class GameActivity extends Activity {
                     int index = mRnd.nextInt(16);//랜덤으로 0~15까지 만들어서
                     if(data[index] == State.EMPTY){
                         mGameView.setCell(index, mGameView.getCurrentPlayer());//플레이어 2가 놧다고 하고
+                        mGameView.setRecent(index);
                         break;
                     }
                 }

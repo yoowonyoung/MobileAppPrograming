@@ -106,6 +106,8 @@ public class GameView extends View {
     private int mWinCol = -1;
     private int mWinRow = -1;
     private int mWinDiag = -1;
+    
+    private int recent;
 
     private boolean mBlinkDisplayOff;
     private final Rect mBlinkRect = new Rect();
@@ -170,6 +172,10 @@ public class GameView extends View {
     public void setCell(int cellIndex, State value) {//게임판의 한칸을 선택함
         mData[cellIndex] = value;//선택한 상태로 그 칸을 변경해주고
         invalidate();//화면 갱신
+    }
+    
+    public void setRecent(int recent){
+    	this.recent = recent;
     }
 
     public void setCellListener(ICellListener cellListener) {//셀 리스너 지정해주는부분
@@ -242,17 +248,29 @@ public class GameView extends View {
                 switch(v) {
                 case PLAYER1:
                     if (mBmpPlayer1 != null) {
-                        canvas.drawBitmap(mBmpPlayer1, mSrcRect, mDstRect, mBmpPaint);
+                    	if(this.recent == k){
+                            canvas.drawBitmap(mBmpRecentP1, mSrcRect, mDstRect, mBmpPaint);
+                    	}else {
+                            canvas.drawBitmap(mBmpPlayer1, mSrcRect, mDstRect, mBmpPaint);
+                    	}
                     }
                     break;
                 case PLAYER2:
                     if (mBmpPlayer2 != null) {
-                        canvas.drawBitmap(mBmpPlayer2, mSrcRect, mDstRect, mBmpPaint);
+                    	if(this.recent == k){
+                            canvas.drawBitmap(mBmpRecentP2, mSrcRect, mDstRect, mBmpPaint);
+                    	}else {
+                            canvas.drawBitmap(mBmpPlayer2, mSrcRect, mDstRect, mBmpPaint);
+                    	}
                     }
                     break;
                 case PLAYER3:
                 	if(mBmpPlayer2 != null) {
-                        canvas.drawBitmap(mBmpPlayer2, mSrcRect, mDstRect, mBmpPaint);
+                		if(this.recent == k){
+                            canvas.drawBitmap(mBmpRecentP2, mSrcRect, mDstRect, mBmpPaint);
+                    	}else {
+                            canvas.drawBitmap(mBmpPlayer2, mSrcRect, mDstRect, mBmpPaint);
+                    	}
                     }
                 }
             }
