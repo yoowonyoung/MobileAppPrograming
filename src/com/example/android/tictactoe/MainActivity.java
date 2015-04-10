@@ -30,130 +30,43 @@ public class MainActivity extends Activity {
     /** Called when the activity is first created. */
 	private int player1win = 0;
 	private int player2win = 0;
-	private int player3win = 0; //컴퓨터
+	private int compWin = 0; //컴퓨터
 	private int player1lose = 0;
 	private int player2lose = 0;
-	private int player3lose = 0;
+	private int compLose = 0;
 	private String playType;
-	
-	
-	
-	
-	
-	
-	
 	///////
 	private MediaPlayer bgm;
-	//////
+	//////	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main); 
-        
         startActivity(new Intent(this, SplashActivity.class));
-        
-        
-        
-        
         ////////
         bgm = MediaPlayer.create(this, R.raw.bgm);
         bgm.setLooping(true);
         bgm.start();
         /////////
-        
-        
-        
-        
-        
-        
-        
-        //컴퓨터와 게임
         findViewById(R.id.play_comp).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
                 startGame(3);//컴퓨터가 먼저 시작하는 start game로 시작
-            
-                
-                
-                
-                
-                
-                
-                
-                ///////
                 bgm.pause();
-                ///////
-                
-                
-                
-                
-                
-                
-                
-                
             }
         });
-        
-        
         findViewById(R.id.start_player1).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
                 startGame(1);//사람이 먼저 시작하는 start game로 시작
-                
-                
-                
-                
-                
-                
-                /////
-                bgm.pause(); //여기서 stop해버리면 bgm데이터가 날라가 메인으로 돌아왔을때 start하려면 다시 설정해줘야 해서 pause로 처리 
-                ///////
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                bgm.pause(); //여기서 stop해버리면 bgm데이터가 날라가 메인으로 돌아왔을때 start하려면 다시 설정해줘야 해서 pause로 처리      
             }
         });
-
-        
-        
         findViewById(R.id.start_player2).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {
-                startGame(2);//컴퓨터가 먼저 시작하는 start game로 시작
-            
-                
-                
-                
-                
-                
-                
-                
-                ///////
-                bgm.pause();
-                ///////
-                
-                
-                
-                
-                
-                
-                
-                
+                startGame(2);//컴퓨터가 먼저 시작하는 start game로 시작      
+                bgm.pause();   
             }
         });
     }
@@ -174,29 +87,14 @@ public class MainActivity extends Activity {
     }
     protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
         super.onResume();
-        
-        
-        
-        
-        
-        
-        ///////
         bgm.start();
-        ///////
-        
-        
-        
-        
-        
-        
-        
-        
-        if(player1win != 0 || player2win != 0 || player3win != 0){
+  
+        if(player1win != 0 || player2win != 0 || compWin != 0){
         
         		Toast.makeText(MainActivity.this, 
         				   "player1 score " + player1win + "Win,  " + player1lose + "Lose \n" 
         	            +  "player2 score " + player2win + "Win,  " + player2lose + "Lose \n"
-        				+  "computer score " + player3win + "Win,  "+ player3lose + "Lose", Toast.LENGTH_LONG).show();
+        				+  "computer score " + compWin + "Win,  "+ compLose + "Lose", Toast.LENGTH_LONG).show();
         }
         	
         
@@ -216,20 +114,15 @@ public class MainActivity extends Activity {
         		player1lose += 1;
         	}else if (score == -3){
         		player1win += 1;
-        		player3lose += 1;
+        		compLose += 1;
         	}else if (score == 3){
-        		player3win += 1;
+        		compWin += 1;
         		player1lose += 1;
         	}
     	}
     	
     }
-    
-    
-    
-    
-    
-    ///////
+    /////////
     public void onPause() 
     {
         super.onPause();
@@ -250,11 +143,5 @@ public class MainActivity extends Activity {
           bgm = null;
 
         }
-    }
-    /////////
-    
-    
-    
-    
-    
+    } 
 }

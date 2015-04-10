@@ -16,7 +16,6 @@ public class SplashActivity extends Activity {
 		Handler handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		};

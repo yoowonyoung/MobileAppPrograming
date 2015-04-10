@@ -50,7 +50,7 @@ public class GameView extends View {
         EMPTY(0),
         PLAYER1(1),
         PLAYER2(2),
-        PLAYER3(3);
+        COMP(3);
 
         private int mValue;
 
@@ -264,7 +264,7 @@ public class GameView extends View {
                     	}
                     }
                     break;
-                case PLAYER3:
+                case COMP:
                 	if(mBmpPlayer2 != null) {
                 		if(this.recent == k){
                             canvas.drawBitmap(mBmpRecentP2, mSrcRect, mDstRect, mBmpPaint);
