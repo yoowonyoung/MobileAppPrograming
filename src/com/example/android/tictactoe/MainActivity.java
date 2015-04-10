@@ -100,7 +100,6 @@ public class MainActivity extends Activity {
         
     }
     
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	// TODO Auto-generated method stub
     	super.onActivityResult(requestCode, resultCode, data);
@@ -122,7 +121,7 @@ public class MainActivity extends Activity {
     	}
     	
     }
-    /////////
+
     public void onPause() 
     {
         super.onPause();

@@ -69,7 +69,7 @@ public class GameActivity extends Activity {
     private long remainTime;//타이머 남은 시간 받는 변수
     private boolean pauseState; //pause상태로 되면 true처리
     ////////타이머에 사용되는 변수
-
+    
     public void timerStart()
     {
     	if(countDown != null)
@@ -109,6 +109,8 @@ public class GameActivity extends Activity {
     	}
     	
     }
+    
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle bundle) {
@@ -173,12 +175,12 @@ public class GameActivity extends Activity {
             mInfoView.setText(R.string.player1_turn);//플레이어 1의 차례라고 해주고
             mGameView.setEnabled(true);//게임판을 터치 가능하게 해줌
 
-        } else if (player == State.PLAYER2) {//플레이어2(컴퓨터)의 차례라면
+        } else if (player == State.PLAYER2) {//플레이어2의 차례라면
             mInfoView.setText(R.string.player2_turn);//플레이어2의 차례라고 해줌
-            mGameView.setEnabled(true);//게임판 터치를 막아
+            mGameView.setEnabled(true);
         } else if(player == State.COMP) {
-        	mInfoView.setText(R.string.comp_turn);//플레이어2의 차례라고 해줌
-            mGameView.setEnabled(true);//게임판 터치를 막아
+        	mInfoView.setText(R.string.comp_turn);//컴퓨터의 차례라고 해줌
+            mGameView.setEnabled(false);//게임판 터치를 막아
         }
 
         return player;//그리고 플레이어를 반환. 턴 끝내기 할때, 다음 플레이어를 지정해주기 위해 써야됨
@@ -197,7 +199,6 @@ public class GameActivity extends Activity {
     }
 
     private class MyButtonListener implements OnClickListener {//버튼 누르기 리스너
-
         public void onClick(View v) {
         	
         	State player = mGameView.getCurrentPlayer();//현재 플레이어의 상태 받아옴
@@ -391,7 +392,7 @@ public class GameActivity extends Activity {
         }
         mInfoView.setText(text);//그리고 그걸 화면에 띄워줌
     }
-    ////////
+    
     public void onPause() 
     {
         super.onPause();  
