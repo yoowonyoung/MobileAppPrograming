@@ -135,7 +135,6 @@ public class GameActivity extends Activity {
 		timerStart();
 		/////////타이머에 쓰이는 변수 정의, 실행
 		
-		
 		playType = getIntent().getStringExtra("playType");
 		
     }
