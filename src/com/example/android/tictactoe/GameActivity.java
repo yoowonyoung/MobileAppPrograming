@@ -27,7 +27,6 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.view.Gravity;

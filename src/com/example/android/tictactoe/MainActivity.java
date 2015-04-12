@@ -24,8 +24,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-import com.example.android.tictactoe.GameView.State;
-
 public class MainActivity extends Activity {
     /** Called when the activity is first created. */
 	private int player1win = 0;
