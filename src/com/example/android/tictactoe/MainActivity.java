@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 public class MainActivity extends Activity {
     /** Called when the activity is first created. */
@@ -82,7 +83,7 @@ public class MainActivity extends Activity {
     protected void onResume() {//일시정지 됫다가 풀릴때 씨스템에서 불러주는 부분
         super.onResume();
         bgm.start();
-  
+        getPerferences();
         if(player1win != 0 || player2win != 0 || compWin != 0){
         
         		Toast.makeText(MainActivity.this, 
@@ -99,19 +100,7 @@ public class MainActivity extends Activity {
     	super.onActivityResult(requestCode, resultCode, data);
     	if(data != null ){
     		int score = data.getExtras().getInt("Player");
-        	if(score == -2){
-        		player1win += 1;
-        		player2lose += 1;
-        	}else if (score == 2){
-        		player2win += 1;
-        		player1lose += 1;
-        	}else if (score == -3){
-        		player1win += 1;
-        		compLose += 1;
-        	}else if (score == 3){
-        		compWin += 1;
-        		player1lose += 1;
-        	}
+        	savePerference(score);
     	}
     	
     }
@@ -136,5 +125,35 @@ public class MainActivity extends Activity {
           bgm = null;
 
         }
-    } 
+    }
+    private void getPerferences() {
+    	SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+    	player1win += pref.getInt("player1win", 0);
+    	player1lose += pref.getInt("player1lose", 0);
+    	player2win  += pref.getInt("player2win", 0);
+    	player2lose  += pref.getInt("player2lose", 0);
+    	compWin  += pref.getInt("compWin", 0);
+    	compLose  += pref.getInt("compLose", 0);
+    }
+    private void savePerference(int score) {
+    	SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+    	SharedPreferences.Editor editer = pref.edit();
+    	if(score == -2){
+    		editer.putInt("player1win", 1);
+    		editer.putInt("player2lose", 1);
+        	editer.commit();
+    	}else if (score == 2){
+    		editer.putInt("player2win", 1);
+    		editer.putInt("player1lose", 1);
+        	editer.commit();
+    	}else if (score == -3){
+    		editer.putInt("player1win", 1);
+    		editer.putInt("compLose", 1);
+        	editer.commit();
+    	}else if (score == 3){
+    		editer.putInt("compWin", 1);
+    		editer.putInt("player1ose", 1);
+        	editer.commit();
+    	}
+    }
 }
