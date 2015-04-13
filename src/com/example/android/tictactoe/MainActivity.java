@@ -33,19 +33,15 @@ public class MainActivity extends Activity {
 	private int player2lose = 0;
 	private int compLose = 0;
 	private String playType;
-	///////
-	private MediaPlayer bgm;
-	//////	
+	private MediaPlayer bgm;	
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main); 
         startActivity(new Intent(this, SplashActivity.class));
-        ////////
         bgm = MediaPlayer.create(this, R.raw.bgm);
         bgm.setLooping(true);
         bgm.start();
-        /////////
         findViewById(R.id.play_comp).setOnClickListener(
                 new OnClickListener() {
             public void onClick(View v) {

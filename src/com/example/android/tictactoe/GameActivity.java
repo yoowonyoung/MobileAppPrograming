@@ -254,7 +254,6 @@ public class GameActivity extends Activity {
     }
 
     private void finishTurn() {//턴을 끝내는 방법
-    	////////////
     	timerSound.pause();
 		countDown.cancel();
 		timeText.setText("");
@@ -264,7 +263,7 @@ public class GameActivity extends Activity {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	///////////소리 pause 시킨 것을 인식 + 턴넘김 인식시키기 위해 사용.
+    	//소리 pause 시킨 것을 인식 + 턴넘김 인식시키기 위해 사용.
     	
         State player = mGameView.getCurrentPlayer();//현재의 플레이어를 받아서
         if (!checkGameFinished(player)) {//그 플레이어가 게임을 끝냈는지 확인한후
@@ -347,12 +346,10 @@ public class GameActivity extends Activity {
             text = getString(R.string.player1_win);//플레이어 1이 이겻다는 스트링
             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibe.vibrate(200); 
-            //////////
             winSoundPool.play(winSound, 1, 1, 0, 0, 1);//윈소리 재생
             timerSound.stop(); //타이머소리 정지
             countDown.cancel(); //타이머정지
-            timeText.setText("");
-            //////////  
+            timeText.setText(""); 
  
             if(playType.equals("pc")) { // pc와 했을 때
             	Intent i = new Intent(this, MainActivity.class);
@@ -381,12 +378,10 @@ public class GameActivity extends Activity {
                 i.putExtra("Player",2);
                 setResult(1,i);
             }
-            //////////
             winSoundPool.play(winSound, 1, 1, 0, 0, 1);
             timerSound.stop();
             countDown.cancel();
             timeText.setText("");
-            ///////////
         }
         mInfoView.setText(text);//그리고 그걸 화면에 띄워줌
     }
