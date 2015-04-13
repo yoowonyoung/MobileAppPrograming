@@ -128,31 +128,31 @@ public class MainActivity extends Activity {
     }
     private void getPerferences() {
     	SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-    	player1win += pref.getInt("player1win", 0);
-    	player1lose += pref.getInt("player1lose", 0);
-    	player2win  += pref.getInt("player2win", 0);
-    	player2lose  += pref.getInt("player2lose", 0);
-    	compWin  += pref.getInt("compWin", 0);
-    	compLose  += pref.getInt("compLose", 0);
+    	player1win = pref.getInt("player1win", 0);
+    	player1lose = pref.getInt("player1lose", 0);
+    	player2win  = pref.getInt("player2win", 0);
+    	player2lose  = pref.getInt("player2lose", 0);
+    	compWin  = pref.getInt("compWin", 0);
+    	compLose  = pref.getInt("compLose", 0);
     }
     private void savePerference(int score) {
     	SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
     	SharedPreferences.Editor editer = pref.edit();
     	if(score == -2){
-    		editer.putInt("player1win", 1);
-    		editer.putInt("player2lose", 1);
+    		editer.putInt("player1win", pref.getInt("player1win", 0)+1);
+    		editer.putInt("player2lose",pref.getInt("player2lose", 0)+1);
         	editer.commit();
     	}else if (score == 2){
-    		editer.putInt("player2win", 1);
-    		editer.putInt("player1lose", 1);
+    		editer.putInt("player2win", pref.getInt("player2win", 0)+1);
+    		editer.putInt("player1lose", pref.getInt("player1lose", 0)+1);
         	editer.commit();
     	}else if (score == -3){
-    		editer.putInt("player1win", 1);
-    		editer.putInt("compLose", 1);
+    		editer.putInt("player1win", pref.getInt("player1win", 0)+1);
+    		editer.putInt("compLose", pref.getInt("compLose", 0)+1);
         	editer.commit();
     	}else if (score == 3){
-    		editer.putInt("compWin", 1);
-    		editer.putInt("player1ose", 1);
+    		editer.putInt("compWin", pref.getInt("compWin", 0)+1);
+    		editer.putInt("player1ose", pref.getInt("player1lose", 0)+1);
         	editer.commit();
     	}
     }
