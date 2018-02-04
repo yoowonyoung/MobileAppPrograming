@@ -11,7 +11,7 @@ Build is supported both via Ant (command-line tools) or via ADT (the Android
 plugin for Eclipse).
 
 --------
-Details:
+Details:1111
 --------
 
 TicTacToeMain is the main project. It defines a main activity that is first
